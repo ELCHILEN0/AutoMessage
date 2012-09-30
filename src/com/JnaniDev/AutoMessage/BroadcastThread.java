@@ -14,22 +14,21 @@ public class BroadcastThread implements Runnable {
 		this.key = key;
 	}
 	
-	@Override
 	public void run() {
 		for(String line : list.getCurrentMessage()) {
 			if(line.equals(list.getCurrentMessage()[0])) {
 				line = list.getPrefix() + line;
 			}
 			broadcast(ChatColor.translateAlternateColorCodes("&".charAt(0), line));
-			list.setMessageIndex(list.getMessageIndex() + 1);
 		}
+		list.setMessageIndex(list.getMessageIndex() + 1);
 	}
 	
 	public void broadcast(String message) {
 		if(plugin.getConfig().getBoolean("settings.enabled")) {
 			if(!(plugin.getConfig().getBoolean("settings.pause-on-empty")) || (plugin.getServer().getOnlinePlayers().length > 0)) {
 				for(Player player : plugin.getServer().getOnlinePlayers()) {
-					if(player.hasPermission("automessage.recieve."+key)) {
+					if(player.hasPermission(String.format("automessage.recieve.%s", key))) {
 						player.sendMessage(message);
 					}
 				}

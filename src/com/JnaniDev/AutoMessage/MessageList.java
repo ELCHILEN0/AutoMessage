@@ -91,7 +91,7 @@ public class MessageList {
 	}
 	
 	public String[] getMessage(int index) {
-		return messages.get(index).split("\\$n");
+		return messages.get(index).split("\\\\n");
 	}
 	
 	public String[] getCurrentMessage() {

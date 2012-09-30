@@ -16,7 +16,9 @@ public class AutoMessage extends JavaPlugin {
 	public void onEnable() {
 		long st = System.currentTimeMillis();
 		// Begin enable code
+		setupMetrics();
 		reloadConfiguration();
+		getCommand("automessage").setExecutor(new AMCommandExecutor(this));
 		// End enable code
 		long et = System.currentTimeMillis();
 		log.info(String.format("[%s] %s is now enabled! Took %sms.", getDescription().getName(), getDescription().getName(), (et-st)));
@@ -38,7 +40,7 @@ public class AutoMessage extends JavaPlugin {
 
 	public void saveConfiguration() {
 		for(String key : messageLists.keySet()) {
-			getConfig().set("message-lists." + key, messageLists.get(key).toMap());
+			getConfig().set(String.format("message-lists.", key), messageLists.get(key).toMap());
 		}
 
 		saveConfig();

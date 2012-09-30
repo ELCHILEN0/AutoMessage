@@ -1,0 +1,24 @@
+#  ----------------------------------------------------
+#  AutoMessage Configuration File
+#  ----------------------------------------------------
+#  Message Configuration:
+#     Messages are handled in lists to allow for advanced customization!
+#     Feel free to add color codes by using & in your messages!
+#     To split a message onto multiple lines use the \n delimiter!
+#     Lines starting with / will be run as a command!
+#     To add single apostrophes into a message use ''.
+
+settings:
+  enabled: true
+  log-to-console: true
+  pause-on-empty: false
+  auto-update: false
+message-lists:
+  default:
+    interval: 45
+    prefix: '&r[&bAutoMsg&r] '
+    random: false
+    messages:
+    - '&1First&r message $nin the loaded messages!'
+    - '&2Second&r message in the loaded messages!'
+    - '&3Third&r message in the loaded messages!'

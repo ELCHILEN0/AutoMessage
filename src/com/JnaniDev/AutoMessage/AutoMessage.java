@@ -9,17 +9,20 @@ import java.util.logging.Logger;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.JnaniDev.AutoMessage.Commands.BaseCommandExecutor;
+
 public class AutoMessage extends JavaPlugin {
-	final Logger log = Logger.getLogger("Minecraft");
+	private Logger log;
 	public Map<String, MessageList> messageLists = new HashMap<String, MessageList>();
 	
 	public void onEnable() {
 		long st = System.currentTimeMillis();
-		// Begin enable code
+		log = getLogger();
+		
 		setupMetrics();
 		reloadConfiguration();
-		getCommand("automessage").setExecutor(new AMCommandExecutor(this));
-		// End enable code
+		getCommand("automessage").setExecutor(new BaseCommandExecutor());
+		
 		long et = System.currentTimeMillis();
 		log.info(String.format("[%s] %s is now enabled! Took %sms.", getDescription().getName(), getDescription().getName(), (et-st)));
 		
@@ -40,7 +43,9 @@ public class AutoMessage extends JavaPlugin {
 
 	public void saveConfiguration() {
 		for(String key : messageLists.keySet()) {
-			getConfig().set(String.format("message-lists.", key), messageLists.get(key).toMap());
+			getConfig().set(
+					String.format("message-lists.%s", key),
+					messageLists.get(key).toMap());
 		}
 
 		saveConfig();
@@ -50,15 +55,21 @@ public class AutoMessage extends JavaPlugin {
 		if (!new File(getDataFolder(), "config.yml").exists()) {
 			saveDefaultConfig();
 		}
+				
+		try {
+			reloadConfig();
 		
-		reloadConfig();
-		
-		// Set the message list to the new values
-		messageLists.clear();
-		Map<String, Object> values = getConfig().getConfigurationSection("message-lists").getValues(false);
-		
-		for(Entry<String, Object> value : values.entrySet()) {
-			messageLists.put(value.getKey(), new MessageList(value.getValue()));
+			// Set the message list to the new values
+			messageLists.clear();
+			Map<String, Object> values = getConfig().getConfigurationSection("message-lists").getValues(false);
+			
+			for(Entry<String, Object> value : values.entrySet()) {
+				messageLists.put(value.getKey(), new MessageList(value.getValue()));
+			}
+		} catch (Exception e) {
+			log.warning("There was an error reading the config see stacktrace below.  Disabling plugin...");
+			setEnabled(false);
+			e.printStackTrace();
 		}
 		
 		// Schedule all the message lists
@@ -70,9 +81,10 @@ public class AutoMessage extends JavaPlugin {
 		getServer().getScheduler().cancelTasks(this);
 		for(String key : messageLists.keySet()) {
 			MessageList list = messageLists.get(key);
-			getServer().getScheduler().scheduleSyncRepeatingTask(this, new BroadcastThread(this, list, key),
-																list.getInterval() * 20L,
-																list.getInterval() * 20L);
+			getServer().getScheduler().scheduleSyncRepeatingTask(this, 
+																new BroadcastThread(this, list, key),
+																list.getInterval() * 20,
+																list.getInterval() * 20);
 		}
 	}
 }

@@ -33,6 +33,9 @@ public class MessageList {
 		this.random = false;
 		this.prefix = "&r[&bAutoMsg&r] ";
 		this.messages = new ArrayList<String>();
+		this.messages.add("&1First&r message in the loaded messages!");
+		this.messages.add("&2Second&r message in the loaded messages!");
+		this.messages.add("&3Third&r message in the loaded messages!");
 		this.messageIndex = 0;
 	}
 	

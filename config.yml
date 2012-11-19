@@ -11,8 +11,8 @@
 
 settings:
   enabled: true
+  min-players: 0
   log-to-console: false
-  pause-on-empty: false
   auto-update: false
 message-lists:
   default:

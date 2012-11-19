@@ -1,16 +1,17 @@
-package com.JnaniDev.AutoMessage;
+package com.JnaniDev.AutoMessage.Tasks;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class BroadcastThread implements Runnable {
-	private AutoMessage plugin;
+import com.JnaniDev.AutoMessage.AutoMessage;
+import com.JnaniDev.AutoMessage.Models.MessageList;
+
+public class BroadcastTask implements Runnable {
 	private MessageList list;
 	private String key;
 	
-	public BroadcastThread(AutoMessage plugin, MessageList list, String key) {
-		this.plugin = plugin;
+	public BroadcastTask(MessageList list, String key) {
 		this.list = list;
 		this.key = key;
 	}

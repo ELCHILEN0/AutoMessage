@@ -5,7 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.TeamNovus.SupernaturalRaces.SupernaturalRaces;
+import com.JnaniDev.AutoMessage.AutoMessage;
 
 public class BaseCommandExecutor implements CommandExecutor {
 
@@ -16,7 +16,7 @@ public class BaseCommandExecutor implements CommandExecutor {
 			return false;
 		}
 		
-		if(SupernaturalRaces.getCommandManager().getCommand(args[0]) == null) {
+		if(AutoMessage.getCommandManager().getCommand(args[0]) == null) {
 			sender.sendMessage(ChatColor.RED + "The specified command was not found!");
 			return false;
 		}

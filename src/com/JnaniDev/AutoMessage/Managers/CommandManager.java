@@ -1,8 +1,10 @@
-package com.JnaniDev.AutoMessage.Commands;
+package com.JnaniDev.AutoMessage.Managers;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+
+import com.JnaniDev.AutoMessage.Commands.BaseCommand;
 
 public class CommandManager {
 	private LinkedHashMap<BaseCommand, Method> commands = new LinkedHashMap<BaseCommand, Method>();

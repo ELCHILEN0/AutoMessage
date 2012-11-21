@@ -23,6 +23,33 @@ public class MessageListManager {
 		this.messageLists = messageLists;
 	}
 	
+	public MessageList getExactList(String name) {
+		for(String key : messageLists.keySet()) {
+			if(key.equalsIgnoreCase(name)) {
+				return messageLists.get(key);
+			}
+		}
+		return null;
+	}
+	
+	public MessageList getBestList(String name) {
+		for(String key : messageLists.keySet()) {
+			if(key.startsWith(name)) {
+				return messageLists.get(key);
+			}
+		}
+		return null;
+	}
+	
+	public void setList(String key, MessageList value) {
+		messageLists.put(key, value);
+		schedule();
+	}
+	
+	public void clear() {
+		messageLists.clear();
+	}
+	
 	public void schedule() {
 		unschedule();
 		

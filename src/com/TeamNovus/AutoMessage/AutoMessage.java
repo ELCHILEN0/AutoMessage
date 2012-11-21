@@ -1,7 +1,6 @@
 package com.TeamNovus.AutoMessage;
 
 import java.io.File;
-import java.util.HashMap;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,7 +35,7 @@ public class AutoMessage extends JavaPlugin {
 			}
 			reloadConfig();
 			
-			HashMap<String, MessageList> messageLists = new HashMap<String, MessageList>();
+			messageListManager.clear();
 			for(String key : getConfig().getConfigurationSection("message-lists").getKeys(false)) {
 				MessageList list = new MessageList();
 				list.setEnabled(getConfig().getBoolean("message-lists." + key + ".enabled"));
@@ -44,9 +43,8 @@ public class AutoMessage extends JavaPlugin {
 				list.setRandom(getConfig().getBoolean("message-lists." + key + ".random"));
 				list.setPrefix(getConfig().getString("message-lists." + key + ".prefix"));
 				list.setMessages(getConfig().getStringList("message-lists." + key + ".messages"));
-				messageLists.put(key, list);
+				messageListManager.setList(key, list);
 			}
-			messageListManager.setMessageLists(messageLists);
 			messageListManager.schedule();
 			
 		} catch (Exception e) {

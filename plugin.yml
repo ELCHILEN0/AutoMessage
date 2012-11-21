@@ -1,9 +1,9 @@
 name: AutoMessage
 author: ELCHILEN0
 description: Easily schedule configurable server wide broadcasts!
-version: 2.0.0
+version: 3.0.0
 website: http://www.novuscraft.org
-main: com.JnaniDev.AutoMessage.AutoMessage
+main: com.TeamNovus.AutoMessage.AutoMessage
 commands:
    automessage:
      description: Main command for all AutoMessage commands

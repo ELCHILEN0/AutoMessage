@@ -21,19 +21,23 @@ public class AutoMessage extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		messageListManager = null;
-		
 		getServer().getScheduler().cancelTasks(this);
 		
+		// Nullify all static variables
 		plugin = null;
+		messageListManager = null;		
 	}
 
 	public void reloadConfiguration() {
-		try {
 			if(!(new File(getDataFolder() + File.separator + "config.yml").exists())) {
 				saveDefaultConfig();
 			}
-			reloadConfig();
+			
+			try {
+				reloadConfig();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 			messageListManager.clear();
 			for(String key : getConfig().getConfigurationSection("message-lists").getKeys(false)) {
@@ -46,13 +50,22 @@ public class AutoMessage extends JavaPlugin {
 				messageListManager.setList(key, list);
 			}
 			messageListManager.schedule();
-			
-		} catch (Exception e) {
-			getLogger().warning("There was an error reading the config!  Plugin automatically disabling...");
-			getLogger().warning("Check your config for any errors with formatting.  See stack trace below.");
-			e.printStackTrace();
-			setEnabled(false);
+	}
+	
+	public void saveConfiguration() {
+		if(!(new File(getDataFolder() + File.separator + "config.yml").exists())) {
+			saveDefaultConfig();
 		}
+		
+		for(String key : messageListManager.getMessageLists().keySet()) {
+			MessageList list = messageListManager.getExactList(key);
+			getConfig().set("message-lists." + key + ".enabled", list.isEnabled());
+			getConfig().set("message-lists." + key + ".interval", list.getInterval());
+			getConfig().set("message-lists." + key + ".random", list.isRandom());
+			getConfig().set("message-lists." + key + ".prefix", list.getPrefix());
+			getConfig().set("message-lists." + key + ".messages", list.getMessages());
+		}
+		saveConfig();
 	}
 	
 	public static AutoMessage getPlugin() {

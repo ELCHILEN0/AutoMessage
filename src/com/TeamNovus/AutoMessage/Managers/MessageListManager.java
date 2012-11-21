@@ -25,7 +25,7 @@ public class MessageListManager {
 	
 	public MessageList getExactList(String name) {
 		for(String key : messageLists.keySet()) {
-			if(key.equalsIgnoreCase(name)) {
+			if(key.equals(name)) {
 				return messageLists.get(key);
 			}
 		}

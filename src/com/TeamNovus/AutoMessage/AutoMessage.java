@@ -4,17 +4,23 @@ import java.io.File;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.TeamNovus.AutoMessage.Commands.BaseCommandExecutor;
+import com.TeamNovus.AutoMessage.Managers.CommandManager;
 import com.TeamNovus.AutoMessage.Managers.MessageListManager;
 import com.TeamNovus.AutoMessage.Models.MessageList;
 
 public class AutoMessage extends JavaPlugin {
 	private static AutoMessage plugin;
 	private static MessageListManager messageListManager;
+	private static CommandManager commandManager;
 	
 	@Override
 	public void onEnable() {
 		plugin = this;
 		messageListManager = new MessageListManager();
+		commandManager = new CommandManager();
+		
+		getCommand("automessage").setExecutor(new BaseCommandExecutor());
 		
 		reloadConfiguration();
 	}
@@ -23,9 +29,9 @@ public class AutoMessage extends JavaPlugin {
 	public void onDisable() {
 		getServer().getScheduler().cancelTasks(this);
 		
-		// Nullify all static variables
 		plugin = null;
-		messageListManager = null;		
+		messageListManager = null;	
+		commandManager = null;
 	}
 
 	public void reloadConfiguration() {
@@ -74,5 +80,9 @@ public class AutoMessage extends JavaPlugin {
 	
 	public static MessageListManager getMessageListManager() {
 		return messageListManager;
+	}
+	
+	public static CommandManager getCommandManager() {
+		return commandManager;
 	}
 }

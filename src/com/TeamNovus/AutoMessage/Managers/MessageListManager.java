@@ -41,8 +41,22 @@ public class MessageListManager {
 		return null;
 	}
 	
+	public String getBestKey(String name) {
+		for(String key : messageLists.keySet()) {
+			if(key.startsWith(name)) {
+				return key;
+			}
+		}
+		return null;
+	}
+	
 	public void setList(String key, MessageList value) {
-		messageLists.put(key, value);
+		if(value == null) {
+			messageLists.remove(key);
+		} else {
+			messageLists.put(key, value);
+		}
+		AutoMessage.getPlugin().saveConfiguration();
 		schedule();
 	}
 	

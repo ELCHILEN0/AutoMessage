@@ -28,7 +28,7 @@ public class BroadcastTask implements Runnable {
 							Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), lines[i].replaceFirst("/", ""));
 						} else {
 							if(i == 0) {
-								lines[i] = list.getPrefix() + lines[i];
+								lines[i] = list.getPrefix() + " " + lines[i];
 							}
 																					
 							for(Player p : Bukkit.getServer().getOnlinePlayers()) {

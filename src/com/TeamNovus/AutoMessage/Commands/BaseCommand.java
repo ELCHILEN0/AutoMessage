@@ -19,4 +19,6 @@ public @interface BaseCommand {
 	
 	int max() default -1;
 	
+	boolean hidden() default false;
+	
 }

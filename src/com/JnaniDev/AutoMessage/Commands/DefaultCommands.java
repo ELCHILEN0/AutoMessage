@@ -4,8 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import com.TeamNovus.SupernaturalRaces.Util.Util;
-
 public class DefaultCommands {
 
 	@BaseCommand(aliases = { "help", "?" }, description = "Learn about the commands and their usage!", usage = "help [Page]")

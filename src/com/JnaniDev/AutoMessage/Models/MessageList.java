@@ -51,7 +51,13 @@ public class MessageList {
 	}
 	
 	public String getMessage() {
-		return messages.get(currentMessage);
+		try {
+			if(currentMessage >= messages.size())
+				currentMessage = 0;
+			return messages.get(currentMessage);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	
 	public void addMessage(String message) {

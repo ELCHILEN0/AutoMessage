@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.JnaniDev.AutoMessage.Commands.BaseCommandExecutor;
 import com.JnaniDev.AutoMessage.Managers.CommandManager;
 import com.JnaniDev.AutoMessage.Managers.MessageListManager;
 import com.JnaniDev.AutoMessage.Models.MessageList;
+import com.JnaniDev.AutoMessage.Tasks.BroadcastTask;
 
 public class AutoMessage extends JavaPlugin {
 	private static AutoMessage plugin;
@@ -45,10 +48,10 @@ public class AutoMessage extends JavaPlugin {
 
 	public void saveConfiguration() {
 		for(String key : AutoMessage.getMessageListManager().getLists().keySet()) {
-			getConfig().set("message-lists" + key + ".interval", messageListManager.getList(key).getInterval());
-			getConfig().set("message-lists" + key + ".random", messageListManager.getList(key).isRandom());
-			getConfig().set("message-lists" + key + ".prefix", messageListManager.getList(key).getPrefix());
-			getConfig().set("message-lists" + key + ".messages", messageListManager.getList(key).getMessages());
+			getConfig().set("message-lists." + key + ".interval", messageListManager.getList(key).getInterval());
+			getConfig().set("message-lists." + key + ".random", messageListManager.getList(key).isRandom());
+			getConfig().set("message-lists." + key + ".prefix", messageListManager.getList(key).getPrefix());
+			getConfig().set("message-lists." + key + ".messages", messageListManager.getList(key).getMessages());
 		}
 
 		saveConfig();
@@ -65,11 +68,14 @@ public class AutoMessage extends JavaPlugin {
 			Map<String, Object> values = getConfig().getConfigurationSection("message-lists").getValues(false);			
 			for(String key : values.keySet()) {
 				MessageList list = new MessageList();
-				list.setInterval(getConfig().getInt("message-lists" + key + ".interval"));
-				list.setRandom(getConfig().getBoolean("message-lists" + key + ".random"));
-				list.setPrefix(getConfig().getString("message-lists" + key + ".prefix"));
-				list.setMessages(getConfig().getStringList("message-lists" + key + ".messages"));
+				list.setInterval(getConfig().getInt("message-lists." + key + ".interval"));
+				list.setRandom(getConfig().getBoolean("message-lists." + key + ".random"));
+				list.setPrefix(getConfig().getString("message-lists." + key + ".prefix"));
+				list.setMessages(getConfig().getStringList("message-lists." + key + ".messages"));
+				
 				messageListManager.putList(key, new MessageList());
+								
+				getServer().getScheduler().scheduleSyncRepeatingTask(this, new BroadcastTask(key), list.getInterval() * 20, list.getInterval() * 20);
 			}
 		} catch (Exception e) {
 			getLogger().warning("There was an error reading the config.  See stacktrace below.  Disabling plugin...");

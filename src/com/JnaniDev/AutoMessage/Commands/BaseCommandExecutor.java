@@ -21,14 +21,14 @@ public class BaseCommandExecutor implements CommandExecutor {
 			return false;
 		}
 		
-		BaseCommand command = SupernaturalRaces.getCommandManager().getCommand(args[0]);
+		BaseCommand command = AutoMessage.getCommandManager().getCommand(args[0]);
 
 		if((args.length < command.min()) || (args.length > command.max() && command.max() != -1)) {
 			sender.sendMessage(ChatColor.RED + "Usage: /" + commandLabel + " " + command.aliases()[0] + " " + command.usage());
 			return false;
 		}
 		
-		SupernaturalRaces.getCommandManager().dispatchCommand(command, sender, cmd, commandLabel, args);
+		AutoMessage.getCommandManager().dispatchCommand(command, sender, cmd, commandLabel, args);
 		return true;
 	}
 }

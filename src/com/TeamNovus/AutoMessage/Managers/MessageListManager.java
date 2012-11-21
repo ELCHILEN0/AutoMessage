@@ -1,6 +1,8 @@
 package com.TeamNovus.AutoMessage.Managers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -11,6 +13,7 @@ import com.TeamNovus.AutoMessage.Tasks.BroadcastTask;
 
 public class MessageListManager {
 	private HashMap<String, MessageList> messageLists = new HashMap<String, MessageList>();
+	private List<Integer> scheduled = new ArrayList<Integer>();
 	
 	public HashMap<String, MessageList> getMessageLists() {
 		return messageLists;
@@ -21,15 +24,22 @@ public class MessageListManager {
 	}
 	
 	public void schedule() {
-		Bukkit.getServer().getScheduler().cancelTasks(AutoMessage.getPlugin());
+		unschedule();
 		
 		for(Entry<String, MessageList> entry : messageLists.entrySet()) {
 			MessageList list = messageLists.get(entry.getKey());
 						
-			Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(AutoMessage.getPlugin(), 
-																		new BroadcastTask(entry), 
-																		20 * list.getInterval(), 
-																		20 * list.getInterval());
+			int id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(AutoMessage.getPlugin(), 
+																				 new BroadcastTask(entry), 
+																				 20 * list.getInterval(), 
+																				 20 * list.getInterval());
+			scheduled.add(id);
+		}
+	}
+	
+	public void unschedule() {
+		for(Integer id : scheduled) {
+			Bukkit.getServer().getScheduler().cancelTask(id);
 		}
 	}
 

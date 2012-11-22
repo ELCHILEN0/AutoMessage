@@ -16,16 +16,18 @@ settings:
   auto-update: false
 message-lists:
   default:
+    enabled: true
+    random: false
     interval: 45
     prefix: '&r[&bAutoMsg&r] '
-    random: false
     messages:
-    - '&1First&r message \nin the loaded messages!'
-    - '&2Second&r message \nin the loaded messages!'
-    - '&3Third&r message \nin the loaded messages!'
+    - '&1First&r message \nin the default list!'
+    - '&2Second&r message \nin the default list!'
+    - '&3Third&r message \nin the default list!'
   vip:
+    enabled: true
+    random: false
     interval: 45
     prefix: '&r[&bAutoMsg&r] '
-    random: false
     messages:
     - 'This message will be displayed to users with \nautomessage.recieve.vip!'

@@ -56,7 +56,6 @@ public class MessageListManager {
 		} else {
 			messageLists.put(key, value);
 		}
-		AutoMessage.getPlugin().saveConfiguration();
 		schedule();
 	}
 	

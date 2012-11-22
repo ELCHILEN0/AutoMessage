@@ -55,6 +55,7 @@ public class PluginCommands {
 
 					AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);
 					AutoMessage.getMessageListManager().schedule();
+					AutoMessage.getPlugin().saveConfiguration();
 
 					sender.sendMessage(ChatColor.GREEN + "Message added!");
 				} else {
@@ -83,6 +84,7 @@ public class PluginCommands {
 
 					AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);
 					AutoMessage.getMessageListManager().schedule();
+					AutoMessage.getPlugin().saveConfiguration();
 				} else {
 					sender.sendMessage(ChatColor.RED + "The specified index does not exist!");
 				}
@@ -119,6 +121,7 @@ public class PluginCommands {
 
 						AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);
 						AutoMessage.getMessageListManager().schedule();
+						AutoMessage.getPlugin().saveConfiguration();
 					} else {
 						sender.sendMessage(ChatColor.RED + "The specified index does not exist!");
 					}
@@ -145,7 +148,8 @@ public class PluginCommands {
 				list.setPrefix("");
 				sender.sendMessage(ChatColor.GREEN + "Prefix updated!");
 
-				AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);				
+				AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);
+				AutoMessage.getPlugin().saveConfiguration();
 			} else {
 				sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
 			}
@@ -155,7 +159,8 @@ public class PluginCommands {
 				list.setPrefix(StringUtil.concat(args, 2, args.length) + " ");
 				sender.sendMessage(ChatColor.GREEN + "Prefix updated!");
 
-				AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);				
+				AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);
+				AutoMessage.getPlugin().saveConfiguration();
 			} else {
 				sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
 			}
@@ -175,7 +180,8 @@ public class PluginCommands {
 			list.setEnabled(!(list.isEnabled()));
 			sender.sendMessage(ChatColor.GREEN + "Enabled: " + ChatColor.YELLOW + list.isEnabled() + ChatColor.GREEN + "!");
 
-			AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);				
+			AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);
+			AutoMessage.getPlugin().saveConfiguration();
 		} else {
 			sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
 		}
@@ -196,7 +202,8 @@ public class PluginCommands {
 				list.setInterval(Integer.valueOf(args[2]));
 				sender.sendMessage(ChatColor.GREEN + "Interval: " + ChatColor.YELLOW + Integer.valueOf(args[2]) + ChatColor.GREEN + "!");
 
-				AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);		
+				AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);	
+				AutoMessage.getPlugin().saveConfiguration();
 			} else {
 				sender.sendMessage(ChatColor.RED + "The interval must be an Integer!");
 			}
@@ -218,7 +225,8 @@ public class PluginCommands {
 			list.setRandom(!(list.isRandom()));
 			sender.sendMessage(ChatColor.GREEN + "Random: " + ChatColor.YELLOW + list.isRandom() + ChatColor.GREEN + "!");
 
-			AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);				
+			AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);		
+			AutoMessage.getPlugin().saveConfiguration();
 		} else {
 			sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
 		}
@@ -243,7 +251,7 @@ public class PluginCommands {
 			}
 		} else {
 			if(AutoMessage.getMessageListManager().getBestList(args[1]) != null) {
-				sender.sendMessage(ChatColor.RED + AutoMessage.getMessageListManager().getBestKey(args[1]));
+				sender.sendMessage(ChatColor.DARK_RED + AutoMessage.getMessageListManager().getBestKey(args[1]));
 				List<String> messages = AutoMessage.getMessageListManager().getBestList(args[1]).getMessages();
 				for (int i = 0; i < messages.size(); i++) {
 					sender.sendMessage(ChatColor.YELLOW + "" + i + ": " + ChatColor.RESET + ChatColor.translateAlternateColorCodes("&".charAt(0), AutoMessage.getMessageListManager().getBestList(args[1]).getPrefix() + messages.get(i)));

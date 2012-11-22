@@ -18,14 +18,16 @@ permissions:
    automessage.commands.remove:
      description: Remove a list or message from a list.
    automessage.commands.enabled:
-     description: Enable or disable a list.
+     description: Toggle broadcasting for a list.
    automessage.commands.interval:
      description: Set a lists broadcast interval.
    automessage.commands.random:
      description: Set a lists broadcast method.
    automessage.commands.prefix:
-     description: Set a lists prefix for messages.
+     description: Set a lists prefix for broadcasts.
    automessage.commands.broadcast:
      description: Broadcast a message from a list.
    automessage.commands.list:
      description: List all lists or messages in a list.
+   automessage.recieve.message-list:
+     description: Receive broadcasts from a list.

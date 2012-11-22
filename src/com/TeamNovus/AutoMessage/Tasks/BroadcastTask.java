@@ -49,7 +49,7 @@ public class BroadcastTask implements Runnable {
 		}
 	}
 	
-	private String parsePlayer(Player reciever, String message) {
+	public static String parsePlayer(Player reciever, String message) {
 		message = message.replace("{NAME}", reciever.getName());
 		message = message.replace("{DISPLAYNAME}", reciever.getDisplayName());
 		message = message.replace("{WORLD}", reciever.getWorld().getName());
@@ -60,7 +60,7 @@ public class BroadcastTask implements Runnable {
 		return message;
 	}
 	
-	private String parseConsole(String message) {
+	public static String parseConsole(String message) {
 		message = message.replace("{NAME}", "CONSOLE");
 		message = message.replace("{DISPLAYNAME}", "CONSOLE");
 		message = message.replace("{WORLD}", "UNKNOWN");

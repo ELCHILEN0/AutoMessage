@@ -56,6 +56,14 @@ public class MessageList {
 		this.messages.add(message);
 	}
 	
+	public String getMessage(Integer index) {
+		try {
+			return this.messages.get(index.intValue());
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+	}
+	
 	public void addMessage(Integer index, String message) {
 		try {
 			this.messages.add(index.intValue(), message);

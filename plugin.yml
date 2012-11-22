@@ -1,6 +1,6 @@
 name: AutoMessage
 author: ELCHILEN0
-description: Easily schedule configurable server wide broadcasts!
+description: Schedule easily configurable broadcasts!
 version: 3.0.0
 website: http://www.novuscraft.org
 main: com.TeamNovus.AutoMessage.AutoMessage
@@ -9,25 +9,25 @@ commands:
      description: Main command for all AutoMessage commands
      aliases: [automsg, am]
 permissions:
-   automessage.reload:
-     description: Permission to reload the configuration from the disk.
-   automessage.messages.add:
-     description: Permission to add messages.
-   automessage.messages.remove:
-     description: Permission to remove messages.
-   automessage.messages.list:
-     description: Permission to list the messages and their indexes.
-   automessage.messages.broadcast:
-     description: Permission to broadcast a message by index.
-   automessage.messages.edit:
-     description: Permission to edit a message by index.
-   automessage.config.interval:
-     description: Permission to set the broadcast interval.
-   automessage.config.prefix:
-     description: Permission to set the broadcast prefix.
-   automessage.config.random:
-     description: Permission to toggle randomized message order.
-   automessage.config.logToConsole:
-     description: Permission to toggle logging to console
-   automessage.config.enabled:
-     description: Permission to enable or disable broadcasting.
+   automessage.commands.reload:
+     description: Reload the configuration from the disk.
+   automessage.commands.add:
+     description: Add a list or message to a list.
+   automessage.commands.edit:
+     description: Edit a message in a list.
+   automessage.commands.remove:
+     description: Remove a list or message from a list.
+   automessage.commands.enabled:
+     description: Enable or disable a list.
+   automessage.commands.interval:
+     description: Set a lists broadcast interval.
+   automessage.commands.random:
+     description: Set a lists broadcast method.
+   automessage.commands.prefix:
+     description: Set a lists prefix for messages.
+   automessage.commands.broadcast:
+     description: Broadcast a message from a list.
+   automessage.commands.list:
+     description: List all lists or messages in a list.
+   automessage.recieve.message-list:
+     description: Receive messages from a specified message list. 

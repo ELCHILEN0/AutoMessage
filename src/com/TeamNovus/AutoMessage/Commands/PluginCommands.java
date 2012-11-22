@@ -219,4 +219,23 @@ public class PluginCommands {
 		}
 	}
 
+	@BaseCommand(aliases = "random", description = "Set a lists broadcasting method.", usage = "<List>", min = 2, max = 2)
+	public void onListCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		// random <List>
+		if(!(sender.hasPermission("automessage.commands.list"))) {
+			sender.sendMessage(ChatColor.RED + "You do not have permission for this command!");
+			return;
+		}
+		
+		if(AutoMessage.getMessageListManager().getBestList(args[1]) != null) {
+			MessageList list = AutoMessage.getMessageListManager().getBestList(args[1]);
+			list.setRandom(!(list.isRandom()));
+			sender.sendMessage(ChatColor.GREEN + "Random: " + ChatColor.YELLOW + list.isRandom() + ChatColor.GREEN + "!");
+
+			AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);				
+		} else {
+			sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
+		}
+	}
+	
 }

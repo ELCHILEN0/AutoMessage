@@ -18,7 +18,7 @@ public class BroadcastTask implements Runnable {
 
 	@Override
 	public void run() {
-		if(entry != null) {
+		if(entry != null && AutoMessage.getPlugin().getConfig().getBoolean("settings.enabled")) {
 			MessageList list = entry.getValue();
 			if(list.getCurrentMessage() != null && list.isEnabled()) {
 				if(Bukkit.getServer().getOnlinePlayers().length >= AutoMessage.getPlugin().getConfig().getInt("settings.min-players")) {
@@ -38,7 +38,7 @@ public class BroadcastTask implements Runnable {
 							}
 							
 							if(AutoMessage.getPlugin().getConfig().getBoolean("settings.log-to-console")) {
-								parseConsole(lines[i]);
+								Bukkit.getConsoleSender().sendMessage(parseConsole(lines[i]));
 							}
 						}
 					}

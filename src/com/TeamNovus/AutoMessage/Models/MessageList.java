@@ -2,6 +2,7 @@ package com.TeamNovus.AutoMessage.Models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MessageList {
 	private Boolean enabled = true;
@@ -91,6 +92,10 @@ public class MessageList {
 	public String getCurrentMessage() {
 		if(currentIndex >= messages.size()) {
 			currentIndex = 0;
+		}
+		
+		if(random) {
+			currentIndex = new Random().nextInt(messages.size() - 1);
 		}
 		
 		try {

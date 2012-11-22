@@ -21,8 +21,6 @@ public class BroadcastTask implements Runnable {
 		if(entry != null && AutoMessage.getPlugin().getConfig().getBoolean("settings.enabled")) {
 			MessageList list = entry.getValue();
 			if(list.getCurrentMessage() != null && list.isEnabled()) {
-				System.out.print("automessage.recieve." + entry.getKey());
-
 				if(Bukkit.getServer().getOnlinePlayers().length >= AutoMessage.getPlugin().getConfig().getInt("settings.min-players")) {
 					String[] lines = list.getCurrentMessage().split("\\\\n");
 					for(int i = 0; i < lines.length; i++) {
@@ -57,7 +55,7 @@ public class BroadcastTask implements Runnable {
 		message = message.replace("{WORLD}", reciever.getWorld().getName());
 		message = message.replace("{BIOME}", reciever.getLocation().getBlock().getBiome().toString());
 		message = message.replace("{ONLINE}", Bukkit.getServer().getOnlinePlayers().length + "");
-		message = message.replace("{MAX_ONLINE}", Bukkit.getServer().getOnlinePlayers().length + "");
+		message = message.replace("{MAX_ONLINE}", Bukkit.getServer().getMaxPlayers() + "");
 		message = ChatColor.translateAlternateColorCodes("&".charAt(0), message);
 		return message;
 	}
@@ -68,7 +66,7 @@ public class BroadcastTask implements Runnable {
 		message = message.replace("{WORLD}", "UNKNOWN");
 		message = message.replace("{BIOME}", "UNKNOWN");
 		message = message.replace("{ONLINE}", Bukkit.getServer().getOnlinePlayers().length + "");
-		message = message.replace("{MAX_ONLINE}", Bukkit.getServer().getOnlinePlayers().length + "");
+		message = message.replace("{MAX_ONLINE}", Bukkit.getServer().getMaxPlayers() + "");
 		message = ChatColor.translateAlternateColorCodes("&".charAt(0), message);
 		return message;
 	}

@@ -107,6 +107,7 @@ public class PluginCommands {
 		if(args.length == 2) {
 			if(AutoMessage.getMessageListManager().getExactList(args[1]) != null) {
 				AutoMessage.getMessageListManager().setList(args[1], null);
+				AutoMessage.getPlugin().saveConfiguration();
 				sender.sendMessage(ChatColor.GREEN + "List removed sucessfully!");
 			} else {
 				sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
@@ -167,7 +168,7 @@ public class PluginCommands {
 		}
 	}
 
-	@BaseCommand(aliases = "enabled", description = "Set a lists prefix.", usage = "<List>", min = 2, max = 2)
+	@BaseCommand(aliases = "enabled", description = "Toggle broadcasting for a list.", usage = "<List>", min = 2, max = 2)
 	public void onEnableCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		// enabled <List>
 		if(!(sender.hasPermission("automessage.commands.enabled"))) {

@@ -7,7 +7,7 @@ public class MessageList {
 	private Boolean enabled = true;
 	private Integer interval = 45;
 	private Boolean random = false;
-	private String prefix = "[&bAutoMessage&r]";
+	private String prefix = "[&bAutoMessage&r] ";
 	private List<String> messages = new ArrayList<String>();
 	
 	private Integer currentIndex = 0;
@@ -58,7 +58,7 @@ public class MessageList {
 	
 	public void addMessage(Integer index, String message) {
 		try {
-			this.messages.add(index, message);
+			this.messages.add(index.intValue(), message);
 		} catch (IndexOutOfBoundsException e) {
 			this.messages.add(message);
 		}
@@ -66,8 +66,7 @@ public class MessageList {
 	
 	public boolean editMessage(Integer index, String message) {
 		try {
-			this.messages.set(index, message);
-			return true;
+			return this.messages.set(index.intValue(), message) != null;
 		} catch (IndexOutOfBoundsException e) {
 			return false;
 		}
@@ -75,8 +74,7 @@ public class MessageList {
 	
 	public boolean removeMessage(Integer index) {
 		try {
-			this.messages.remove(index);
-			return true;
+			return this.messages.remove(index.intValue()) != null;
 		} catch (IndexOutOfBoundsException e) {
 			return false;
 		}

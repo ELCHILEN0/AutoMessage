@@ -69,6 +69,10 @@ public class AutoMessage extends JavaPlugin {
 			saveDefaultConfig();
 		}
 		
+		for(String key : getConfig().getConfigurationSection("message-lists").getKeys(false)) {
+			getConfig().set("message-lists." + key, null);
+		}
+		
 		for(String key : messageListManager.getMessageLists().keySet()) {
 			MessageList list = messageListManager.getExactList(key);
 			getConfig().set("message-lists." + key + ".enabled", list.isEnabled());

@@ -1,6 +1,7 @@
 package com.TeamNovus.AutoMessage;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -44,6 +45,13 @@ public class AutoMessage extends JavaPlugin {
 				getLogger().info("There are no availiable updates for download.");
 				break;
 			}
+		}
+		
+		try {
+		    Metrics metrics = new Metrics(this);
+		    metrics.start();
+		} catch (IOException e) {
+	    	e.printStackTrace();
 		}
 	}
 

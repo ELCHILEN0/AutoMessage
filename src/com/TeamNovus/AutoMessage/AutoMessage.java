@@ -31,7 +31,7 @@ public class AutoMessage extends JavaPlugin {
 		reloadConfiguration();
 		
 		if(getConfig().getBoolean("settings.auto-update")) {
-			getLogger().info("Auto-Updates enabled!  Checking for updates...");
+			getLogger().info("Auto-update enabled!  Checking for updates...");
 			UpdateResult result = new Updater(this, "automessage", this.getFile(), UpdateType.NO_DOWNLOAD, false).getResult();
 			switch (result) {
 			case UPDATE_AVAILABLE:
@@ -44,8 +44,6 @@ public class AutoMessage extends JavaPlugin {
 				getLogger().info("There are no availiable updates for download.");
 				break;
 			}
-		} else {
-			getLogger().info("It is recomended that you enable auto-update to always have the latest version!");
 		}
 	}
 

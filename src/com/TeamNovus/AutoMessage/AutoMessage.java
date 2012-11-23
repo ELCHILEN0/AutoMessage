@@ -4,6 +4,8 @@ import java.io.File;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.TeamNovus.AutoMessage.Updater.UpdateResult;
+import com.TeamNovus.AutoMessage.Updater.UpdateType;
 import com.TeamNovus.AutoMessage.Commands.BaseCommandExecutor;
 import com.TeamNovus.AutoMessage.Commands.DefaultCommands;
 import com.TeamNovus.AutoMessage.Commands.PluginCommands;
@@ -27,6 +29,24 @@ public class AutoMessage extends JavaPlugin {
 		commandManager.registerClass(PluginCommands.class);
 		
 		reloadConfiguration();
+		
+		if(getConfig().getBoolean("settings.auto-update")) {
+			getLogger().info("Auto-Updates enabled!  Checking for updates...");
+			UpdateResult result = new Updater(this, "automessage", this.getFile(), UpdateType.NO_DOWNLOAD, false).getResult();
+			switch (result) {
+			case UPDATE_AVAILABLE:
+				getLogger().info("An update is available for a download! Automatically downloading...");
+				new Updater(this, "automessage", this.getFile(), UpdateType.DEFAULT, true);
+				getLogger().info("Update downloaded and installed! Restart server for changes to take effect!");
+				break; 
+
+			default:
+				getLogger().info("There are no availiable updates for download.");
+				break;
+			}
+		} else {
+			getLogger().info("It is recomended that you enable auto-update to always have the latest version!");
+		}
 	}
 
 	@Override

@@ -95,7 +95,7 @@ public class MessageList {
 		}
 		
 		if(random) {
-			currentIndex = new Random().nextInt(messages.size() - 1);
+			currentIndex = new Random().nextInt(messages.size());
 		}
 		
 		try {

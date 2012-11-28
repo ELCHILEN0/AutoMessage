@@ -32,7 +32,7 @@ public class BroadcastTask implements Runnable {
 							}
 																					
 							for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-								if(p.hasPermission("automessage.recieve." + entry.getKey())) {
+								if(p.hasPermission("automessage.receive." + entry.getKey())) {
 									p.sendMessage(parsePlayer(p, lines[i]));
 								}
 							}

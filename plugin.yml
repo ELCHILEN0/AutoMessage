@@ -29,5 +29,5 @@ permissions:
      description: Broadcast a message from a list.
    automessage.commands.list:
      description: List all lists or messages in a list.
-   automessage.recieve.message-list:
+   automessage.receive.message-list:
      description: Receive broadcasts from a list.

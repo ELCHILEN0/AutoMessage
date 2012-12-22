@@ -24,10 +24,11 @@ message-lists:
     - '&1First&r message \nin the default list!'
     - '&2Second&r message \nin the default list!'
     - '&3Third&r message \nin the default list!'
+    - 'These messages will be displayed to users with \nautomessage.receive.default!'
   vip:
     enabled: true
     random: false
     interval: 45
     prefix: '&r[&bAutoMsg&r] '
     messages:
-    - 'This message will be displayed to users with \nautomessage.recieve.vip!'
+    - 'This message will be displayed to users with \nautomessage.receive.vip!'

@@ -1,7 +1,7 @@
 name: AutoMessage
 author: ELCHILEN0
 description: Schedule easily configurable broadcasts!
-version: 2.0.5
+version: 2.1.0
 website: http://www.novuscraft.org
 main: com.TeamNovus.AutoMessage.AutoMessage
 commands:

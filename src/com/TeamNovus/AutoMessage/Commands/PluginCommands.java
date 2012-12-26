@@ -179,6 +179,43 @@ public class PluginCommands {
 			sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
 		}
 	}
+	
+	@BaseCommand(aliases = "expiry", description = "Set a lists expiry time.", usage = "<List> <Expiry>", min = 3, max = 3)
+	public void onExpiryCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		// expiry <List> <Interval>
+		if(!(sender.hasPermission("automessage.commands.expiry"))) {
+			sender.sendMessage(ChatColor.RED + "You do not have permission for this command!");
+			return;
+		}
+
+		if(AutoMessage.getMessageListManager().getBestList(args[1]) != null) {
+			MessageList list = AutoMessage.getMessageListManager().getBestList(args[1]);
+
+			try {
+				if(StringUtil.isInteger(args[2])) {
+					if(Integer.valueOf(args[2]).longValue() >= 0) {
+						list.setExpiry(System.currentTimeMillis() + Integer.valueOf(args[2]).longValue());
+					} else {
+						list.setExpiry(Integer.valueOf(-1).longValue());
+					}
+				} else {
+					list.setExpiry(System.currentTimeMillis() + StringUtil.parseTime(args[2]));
+				}
+				
+				if(list.getExpiry() != -1) {
+					sender.sendMessage(ChatColor.GREEN + "Expires in " + ChatColor.YELLOW + StringUtil.millisToLongDHMS(list.getExpiry() - System.currentTimeMillis()) + ChatColor.GREEN + "!");
+				} else {
+					sender.sendMessage(ChatColor.GREEN + "Expiry disabled!");
+				}
+				AutoMessage.getMessageListManager().setList(AutoMessage.getMessageListManager().getBestKey(args[1]), list);	
+				AutoMessage.getPlugin().saveConfiguration();
+			} catch (NumberFormatException e) {
+				sender.sendMessage(ChatColor.RED + "Illegal Format. To disable use -1.");
+			}
+		} else {
+			sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
+		}
+	}
 
 	@BaseCommand(aliases = "random", description = "Set a lists broadcast method.", usage = "<List>", min = 2, max = 2)
 	public void onRandomCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {

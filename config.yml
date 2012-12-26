@@ -8,6 +8,7 @@
 #     Lines starting with / will be run as a command!
 #     To add single apostrophes into a message use ''.
 #     For a complete tutorial go to http://dev.bukkit.org/server-mods/automessage.
+#     If you are unfamiliar with YAML use the in-game commands: /am help
 
 settings:
   enabled: true
@@ -19,6 +20,7 @@ message-lists:
     enabled: true
     random: false
     interval: 45
+    expiry: -1
     prefix: '&r[&bAutoMsg&r] '
     messages:
     - '&1First&r message \nin the default list!'
@@ -29,6 +31,7 @@ message-lists:
     enabled: true
     random: false
     interval: 45
+    expiry: -1
     prefix: '&r[&bAutoMsg&r] '
     messages:
     - 'This message will be displayed to users with \nautomessage.receive.vip!'

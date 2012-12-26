@@ -7,6 +7,7 @@ import java.util.Random;
 public class MessageList {
 	private Boolean enabled = true;
 	private Integer interval = 45;
+	private Long expiry = -1L;
 	private Boolean random = false;
 	private String prefix = "[&bAutoMessage&r] ";
 	private List<String> messages = new ArrayList<String>();
@@ -27,6 +28,18 @@ public class MessageList {
 
 	public void setInterval(Integer interval) {
 		this.interval = interval;
+	}
+	
+	public Long getExpiry() {
+		return expiry;
+	}
+	
+	public void setExpiry(Long expiry) {
+		this.expiry = expiry;
+	}
+	
+	public Boolean isExpired() {
+		return System.currentTimeMillis() >= expiry && expiry != -1;
 	}
 
 	public Boolean isRandom() {

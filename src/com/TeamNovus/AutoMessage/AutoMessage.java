@@ -82,6 +82,7 @@ public class AutoMessage extends JavaPlugin {
 				MessageList list = new MessageList();
 				list.setEnabled(getConfig().getBoolean("message-lists." + key + ".enabled"));
 				list.setInterval(getConfig().getInt("message-lists." + key + ".interval"));
+				list.setExpiry(getConfig().getLong("message-lists." + key + ".expiry"));
 				list.setRandom(getConfig().getBoolean("message-lists." + key + ".random"));
 				list.setPrefix(getConfig().getString("message-lists." + key + ".prefix"));
 				list.setMessages(getConfig().getStringList("message-lists." + key + ".messages"));
@@ -103,6 +104,7 @@ public class AutoMessage extends JavaPlugin {
 			MessageList list = messageListManager.getExactList(key);
 			getConfig().set("message-lists." + key + ".enabled", list.isEnabled());
 			getConfig().set("message-lists." + key + ".interval", list.getInterval());
+			getConfig().set("message-lists." + key + ".expiry", list.getExpiry());
 			getConfig().set("message-lists." + key + ".random", list.isRandom());
 			getConfig().set("message-lists." + key + ".prefix", list.getPrefix());
 			getConfig().set("message-lists." + key + ".messages", list.getMessages());

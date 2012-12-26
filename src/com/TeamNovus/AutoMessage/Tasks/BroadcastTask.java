@@ -20,7 +20,7 @@ public class BroadcastTask implements Runnable {
 	public void run() {
 		if(entry != null && AutoMessage.getPlugin().getConfig().getBoolean("settings.enabled")) {
 			MessageList list = entry.getValue();
-			if(list.getMessages().size() > 0 && list.getCurrentMessage() != null && list.isEnabled()) {
+			if(list.getMessages().size() > 0 && list.getCurrentMessage() != null && list.isEnabled() && !(list.isExpired())) {
 				if(Bukkit.getServer().getOnlinePlayers().length >= AutoMessage.getPlugin().getConfig().getInt("settings.min-players")) {
 					String[] lines = list.getCurrentMessage().split("\\\\n");
 					for(int i = 0; i < lines.length; i++) {

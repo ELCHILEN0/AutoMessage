@@ -80,12 +80,25 @@ public class AutoMessage extends JavaPlugin {
 			messageListManager.clear();
 			for(String key : getConfig().getConfigurationSection("message-lists").getKeys(false)) {
 				MessageList list = new MessageList();
-				list.setEnabled(getConfig().getBoolean("message-lists." + key + ".enabled"));
-				list.setInterval(getConfig().getInt("message-lists." + key + ".interval"));
-				list.setExpiry(getConfig().getLong("message-lists." + key + ".expiry"));
-				list.setRandom(getConfig().getBoolean("message-lists." + key + ".random"));
-				list.setPrefix(getConfig().getString("message-lists." + key + ".prefix"));
-				list.setMessages(getConfig().getStringList("message-lists." + key + ".messages"));
+				
+				if(getConfig().contains("message-lists." + key + ".enabled"))
+					list.setEnabled(getConfig().getBoolean("message-lists." + key + ".enabled"));
+				
+				if(getConfig().contains("message-lists." + key + ".interval"))
+					list.setInterval(getConfig().getInt("message-lists." + key + ".interval"));
+				
+				if(getConfig().contains("message-lists." + key + ".expiry"))
+					list.setExpiry(getConfig().getLong("message-lists." + key + ".expiry"));
+				
+				if(getConfig().contains("message-lists." + key + ".random"))
+					list.setRandom(getConfig().getBoolean("message-lists." + key + ".random"));
+				
+				if(getConfig().contains("message-lists." + key + ".random"))
+					list.setPrefix(getConfig().getString("message-lists." + key + ".prefix"));
+				
+				if(getConfig().contains("message-lists." + key + ".random"))
+					list.setMessages(getConfig().getStringList("message-lists." + key + ".messages"));
+				
 				messageListManager.setList(key, list);
 			}
 			messageListManager.schedule();

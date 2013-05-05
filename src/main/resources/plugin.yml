@@ -1,0 +1,33 @@
+name: AutoMessage
+author: ELCHILEN0
+description: Schedule easily configurable broadcasts!
+version: 2.1.3
+website: http://www.novuscraft.org
+main: com.TeamNovus.AutoMessage.AutoMessage
+commands:
+   automessage:
+     description: Main command for all AutoMessage commands
+     aliases: [automsg, am]
+permissions:
+   automessage.commands.reload:
+     description: Reload the configuration from the disk.
+   automessage.commands.add:
+     description: Add a list or message to a list.
+   automessage.commands.edit:
+     description: Edit a message in a list.
+   automessage.commands.remove:
+     description: Remove a list or message from a list.
+   automessage.commands.enabled:
+     description: Toggle broadcasting for a list.
+   automessage.commands.interval:
+     description: Set a lists broadcast interval.
+   automessage.commands.random:
+     description: Set a lists broadcast method.
+   automessage.commands.prefix:
+     description: Set a lists prefix for broadcasts.
+   automessage.commands.broadcast:
+     description: Broadcast a message from a list.
+   automessage.commands.list:
+     description: List all lists or messages in a list.
+   automessage.receive.message-list:
+     description: Receive broadcasts from a list.

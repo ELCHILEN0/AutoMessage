@@ -1,0 +1,37 @@
+#  ----------------------------------------------------
+#  AutoMessage Configuration File
+#  ----------------------------------------------------
+#  Message Configuration:
+#     Messages are handled in lists to allow for advanced customization!
+#     Feel free to add color codes by using & in your messages!
+#     To split a message onto multiple lines use the \n delimiter!
+#     Lines starting with / will be run as a command!
+#     To add single apostrophes into a message use ''.
+#     For a complete tutorial go to http://dev.bukkit.org/server-mods/automessage.
+#     If you are unfamiliar with YAML use the in-game commands: /am help
+
+settings:
+  enabled: true
+  min-players: 0
+  log-to-console: false
+  auto-update: false
+message-lists:
+  default:
+    enabled: true
+    random: false
+    interval: 45
+    expiry: -1
+    prefix: '&r[&bAutoMsg&r] '
+    messages:
+    - '&1First&r message \nin the default list!'
+    - '&2Second&r message \nin the default list!'
+    - '&3Third&r message \nin the default list!'
+    - 'These messages will be displayed to users with \nautomessage.receive.default!'
+  vip:
+    enabled: true
+    random: false
+    interval: 45
+    expiry: -1
+    prefix: '&r[&bAutoMsg&r] '
+    messages:
+    - 'This message will be displayed to users with \nautomessage.receive.vip!'

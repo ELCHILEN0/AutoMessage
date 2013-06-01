@@ -1,15 +1,24 @@
 package com.TeamNovus.AutoMessage.Models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+
 public class MessageList {
-	private Boolean enabled = true;
-	private Integer interval = 45;
-	private Long expiry = -1L;
-	private Boolean random = false;
-	private String prefix = "[&bAutoMessage&r] ";
+	private boolean enabled = true;
+	private int interval = 45;
+	private long expiry = -1L;
+	private boolean random = false;
+	private String prefix = "[&bPrefix&r] ";
+	private String suffix = "[&4Suffix&r]";
 	private List<String> messages = new ArrayList<String>();
 	
 	private Integer currentIndex = 0;
@@ -56,6 +65,14 @@ public class MessageList {
 
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
+	}
+	
+	public String getSuffix() {
+		return suffix;
+	}
+	
+	public void setSuffix(String suffix) {
+		this.suffix = suffix;
 	}
 
 	public List<String> getMessages() {
@@ -124,5 +141,60 @@ public class MessageList {
 	
 	public Integer getCurrentIndex() {
 		return currentIndex;
+	}
+	
+	public void broadcast(int index) {
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			broadcastTo(index, player);
+		}
+		
+		broadcastTo(index, Bukkit.getConsoleSender());
+	}
+	
+	public void broadcastTo(int index, CommandSender to) {
+		if(getMessage(index) != null) {
+			String[] lines = getMessage(index).split("\\\\n");
+
+			List<String> messages = new ArrayList<String>();
+			List<String> commands = new ArrayList<String>();
+			
+			for (String line : lines) {
+				if(line.startsWith("/")) {
+					commands.add(line.replaceFirst("/", ""));
+				} else {
+					messages.add(line);
+				}
+			}
+			
+			if(messages.size() >= 1) {
+				messages = Arrays.asList((getPrefix() + StringUtils.join(messages.toArray(), "\n") + getSuffix()).split("\\\\n"));
+			}
+			
+			for(String message : messages) {
+				if(to instanceof Player) {
+					message = message.replace("{NAME}", 			((Player) to).getName());
+					message = message.replace("{DISPLAYNAME}", 		((Player) to).getDisplayName());
+					message = message.replace("{WORLD}", 			((Player) to).getWorld().getName());
+					message = message.replace("{BIOME}", 			((Player) to).getLocation().getBlock().getBiome().toString());
+					message = message.replace("{ONLINE}", 			Bukkit.getServer().getOnlinePlayers().length + "");
+					message = message.replace("{MAX_ONLINE}", 		Bukkit.getServer().getMaxPlayers() + "");						
+				} else if(to instanceof ConsoleCommandSender) {
+					message = message.replace("{NAME}", 			"CONSOLE");
+					message = message.replace("{DISPLAYNAME}", 		"CONSOLE");
+					message = message.replace("{WORLD}", 			"UNKNOWN");
+					message = message.replace("{BIOME}", 			"UNKNOWN");
+					message = message.replace("{ONLINE}", 			Bukkit.getServer().getOnlinePlayers().length + "");
+					message = message.replace("{MAX_ONLINE}", 		Bukkit.getServer().getMaxPlayers() + "");						
+				}
+				
+				to.sendMessage(ChatColor.translateAlternateColorCodes("&".charAt(0), message));
+			}
+			
+			for(String command : commands) {
+				if(to instanceof ConsoleCommandSender) {
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+				}
+			}
+		}
 	}
 }

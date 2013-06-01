@@ -21,7 +21,8 @@ message-lists:
     random: false
     interval: 45
     expiry: -1
-    prefix: '&r[&bAutoMsg&r] '
+    prefix: '[&bPrefix&r] '
+    suffix: '[&4Suffix&r]'
     messages:
     - '&1First&r message \nin the default list!'
     - '&2Second&r message \nin the default list!'
@@ -32,6 +33,7 @@ message-lists:
     random: false
     interval: 45
     expiry: -1
-    prefix: '&r[&bAutoMsg&r] '
+    prefix: '[&bPrefix&r]\n'
+    suffix: '\n[&4Suffix&r] '
     messages:
-    - 'This message will be displayed to users with \nautomessage.receive.vip!'
+    - 'This message will be displayed only to users with \nautomessage.receive.vip!'

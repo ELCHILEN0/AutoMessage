@@ -26,7 +26,7 @@
  * either expressed or implied, of anybody else.
  */
 
-package com.TeamNovus.AutoMessage;
+package com.TeamNovus.AutoMessage.Util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;

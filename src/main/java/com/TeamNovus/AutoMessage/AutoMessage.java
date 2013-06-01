@@ -5,34 +5,38 @@ import java.io.IOException;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.TeamNovus.AutoMessage.Updater.UpdateResult;
-import com.TeamNovus.AutoMessage.Updater.UpdateType;
-import com.TeamNovus.AutoMessage.Commands.BaseCommandExecutor;
+import com.TeamNovus.AutoMessage.Util.Metrics;
+import com.TeamNovus.AutoMessage.Util.Updater;
+import com.TeamNovus.AutoMessage.Util.Updater.UpdateResult;
+import com.TeamNovus.AutoMessage.Util.Updater.UpdateType;
 import com.TeamNovus.AutoMessage.Commands.DefaultCommands;
 import com.TeamNovus.AutoMessage.Commands.PluginCommands;
-import com.TeamNovus.AutoMessage.Managers.CommandManager;
-import com.TeamNovus.AutoMessage.Managers.MessageListManager;
+import com.TeamNovus.AutoMessage.Commands.Core.BaseCommandExecutor;
+import com.TeamNovus.AutoMessage.Commands.Core.CommandManager;
 import com.TeamNovus.AutoMessage.Models.MessageList;
+import com.TeamNovus.AutoMessage.Models.MessageLists;
 
 public class AutoMessage extends JavaPlugin {
 	private static AutoMessage plugin;
-	private static MessageListManager messageListManager;
-	private static CommandManager commandManager;
 	
 	@Override
 	public void onEnable() {
 		plugin = this;
-		messageListManager = new MessageListManager();
-		commandManager = new CommandManager();
 		
+		// Setup the base command.
 		getCommand("automessage").setExecutor(new BaseCommandExecutor());
-		commandManager.registerClass(DefaultCommands.class);
-		commandManager.registerClass(PluginCommands.class);
 		
-		reloadConfiguration();
+		// Register additional commands.
+		CommandManager.register(DefaultCommands.class);
+		CommandManager.register(PluginCommands.class);
 		
+		// Load the configuration.
+		loadConfig();
+		
+		// Check for updates.
 		if(getConfig().getBoolean("settings.auto-update")) {
 			getLogger().info("Auto-update enabled!  Checking for updates...");
+			
 			UpdateResult result = new Updater(this, "automessage", this.getFile(), UpdateType.NO_DOWNLOAD, false).getResult();
 			switch (result) {
 			case UPDATE_AVAILABLE:
@@ -47,8 +51,10 @@ public class AutoMessage extends JavaPlugin {
 			}
 		}
 		
+		// Start metrics.
 		try {
 		    Metrics metrics = new Metrics(this);
+		    
 		    metrics.start();
 		} catch (IOException e) {
 	    	e.printStackTrace();
@@ -57,16 +63,12 @@ public class AutoMessage extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		getServer().getScheduler().cancelTasks(this);
-		
-		messageListManager.unschedule();
+		MessageLists.unschedule();
 		
 		plugin = null;
-		messageListManager = null;	
-		commandManager = null;
 	}
 
-	public void reloadConfiguration() {
+	public void loadConfig() {
 			if(!(new File(getDataFolder() + File.separator + "config.yml").exists())) {
 				saveDefaultConfig();
 			}
@@ -77,7 +79,8 @@ public class AutoMessage extends JavaPlugin {
 				e.printStackTrace();
 			}
 			
-			messageListManager.clear();
+			MessageLists.clear();
+			
 			for(String key : getConfig().getConfigurationSection("message-lists").getKeys(false)) {
 				MessageList list = new MessageList();
 				
@@ -93,15 +96,19 @@ public class AutoMessage extends JavaPlugin {
 				if(getConfig().contains("message-lists." + key + ".random"))
 					list.setRandom(getConfig().getBoolean("message-lists." + key + ".random"));
 				
-				if(getConfig().contains("message-lists." + key + ".random"))
+				if(getConfig().contains("message-lists." + key + ".prefix"))
 					list.setPrefix(getConfig().getString("message-lists." + key + ".prefix"));
+
+				if(getConfig().contains("message-lists." + key + ".suffix"))
+					list.setSuffix(getConfig().getString("message-lists." + key + ".suffix"));
 				
-				if(getConfig().contains("message-lists." + key + ".random"))
+				if(getConfig().contains("message-lists." + key + ".messages"))
 					list.setMessages(getConfig().getStringList("message-lists." + key + ".messages"));
 				
-				messageListManager.setList(key, list);
+				MessageLists.setList(key, list);
 			}
-			messageListManager.schedule();
+			
+			MessageLists.schedule();
 	}
 	
 	public void saveConfiguration() {
@@ -113,13 +120,14 @@ public class AutoMessage extends JavaPlugin {
 			getConfig().set("message-lists." + key, null);
 		}
 		
-		for(String key : messageListManager.getMessageLists().keySet()) {
-			MessageList list = messageListManager.getExactList(key);
+		for(String key : MessageLists.getMessageLists().keySet()) {
+			MessageList list = MessageLists.getExactList(key);
 			getConfig().set("message-lists." + key + ".enabled", list.isEnabled());
 			getConfig().set("message-lists." + key + ".interval", list.getInterval());
 			getConfig().set("message-lists." + key + ".expiry", list.getExpiry());
 			getConfig().set("message-lists." + key + ".random", list.isRandom());
 			getConfig().set("message-lists." + key + ".prefix", list.getPrefix());
+			getConfig().set("message-lists." + key + ".suffix", list.getSuffix());
 			getConfig().set("message-lists." + key + ".messages", list.getMessages());
 		}
 		saveConfig();
@@ -127,13 +135,5 @@ public class AutoMessage extends JavaPlugin {
 	
 	public static AutoMessage getPlugin() {
 		return plugin;
-	}
-	
-	public static MessageListManager getMessageListManager() {
-		return messageListManager;
-	}
-	
-	public static CommandManager getCommandManager() {
-		return commandManager;
 	}
 }

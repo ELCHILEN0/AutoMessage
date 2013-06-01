@@ -1,4 +1,4 @@
-package com.TeamNovus.AutoMessage;
+package com.TeamNovus.AutoMessage.Util;
 
 import java.io.*;
 import java.net.MalformedURLException;

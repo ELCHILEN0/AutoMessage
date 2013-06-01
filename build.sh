@@ -12,7 +12,8 @@ do
         case "${option}"
         in
                 o) OUTPUT=${OPTARG};;
-                c) CLEAR=0;;
+                c) CLEAR=true;;
+                s) SHADED=true;;
         esac
 done
 
@@ -21,7 +22,15 @@ if [ -z "$OUTPUT" ]
     echo "No file path specified.  Skipping copy."
   else
     echo "Copying packaged file..."
-    cp target/*-standalone.jar $OUTPUT
+
+    if [ $SHADED ]
+      then
+        echo "target/*-standalone.jar";
+        cp target/*-standalone.jar $OUTPUT
+      else
+                echo "target/*.jar";
+        cp target/*.jar $OUTPUT
+    fi
 fi
 
 if [ $CLEAR ]

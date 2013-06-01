@@ -21,41 +21,45 @@ public class MessageList {
 	private String suffix = "[&4Suffix&r]";
 	private List<String> messages = new ArrayList<String>();
 	
-	private Integer currentIndex = 0;
+	private transient int currentIndex = 0;
 	
-	public Boolean isEnabled() {
+	public MessageList() {
+	    messages.add(new String("This is a &amessage&r in a &amessage-list&r!"));
+	}
+	
+	public boolean isEnabled() {
 		return enabled;
 	}
 	
-	public void setEnabled(Boolean enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
-	public Integer getInterval() {
+	public int getInterval() {
 		return interval;
 	}
 
-	public void setInterval(Integer interval) {
+	public void setInterval(int interval) {
 		this.interval = interval;
 	}
 	
-	public Long getExpiry() {
+	public long getExpiry() {
 		return expiry;
 	}
 	
-	public void setExpiry(Long expiry) {
+	public void setExpiry(long expiry) {
 		this.expiry = expiry;
 	}
 	
-	public Boolean isExpired() {
+	public boolean isExpired() {
 		return System.currentTimeMillis() >= expiry && expiry != -1;
 	}
 
-	public Boolean isRandom() {
+	public boolean isRandom() {
 		return random;
 	}
 
-	public void setRandom(Boolean random) {
+	public void setRandom(boolean random) {
 		this.random = random;
 	}
 
@@ -135,11 +139,11 @@ public class MessageList {
 		}
 	}
 	
-	public void setCurrentIndex(Integer currentIndex) {
+	public void setCurrentIndex(int currentIndex) {
 		this.currentIndex = currentIndex;
 	}
 	
-	public Integer getCurrentIndex() {
+	public int getCurrentIndex() {
 		return currentIndex;
 	}
 	

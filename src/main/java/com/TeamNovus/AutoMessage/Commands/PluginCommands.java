@@ -28,7 +28,9 @@ public class PluginCommands {
 			if(MessageLists.getExactList(args[0]) == null) {
 				MessageLists.setList(args[0], new MessageList());
 				
-				sender.sendMessage(ChatColor.GREEN + "List added sucessfully!");
+				AutoMessage.getPlugin().saveConfiguration();
+				
+				sender.sendMessage(ChatColor.GREEN + "List added sucessfully!");				
 			} else {
 				sender.sendMessage(ChatColor.RED + "A list already exists by this name!");
 			}
@@ -62,9 +64,9 @@ public class PluginCommands {
 		if(list != null) {
 			if(StringUtil.isInteger(args[1])) {
 				if(list.editMessage(Integer.valueOf(args[1]), StringUtil.concat(args, 2, args.length))) {
-					sender.sendMessage(ChatColor.GREEN + "Message edited!");
-
 					AutoMessage.getPlugin().saveConfiguration();
+					
+					sender.sendMessage(ChatColor.GREEN + "Message edited!");
 				} else {
 					sender.sendMessage(ChatColor.RED + "The specified index does not exist!");
 				}
@@ -82,9 +84,9 @@ public class PluginCommands {
 			if(MessageLists.getExactList(args[0]) != null) {
 				MessageLists.setList(args[0], null);
 				
-				sender.sendMessage(ChatColor.GREEN + "List removed sucessfully!");
-				
 				AutoMessage.getPlugin().saveConfiguration();
+				
+				sender.sendMessage(ChatColor.GREEN + "List removed sucessfully!");				
 			} else {
 				sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
 			}
@@ -94,10 +96,10 @@ public class PluginCommands {
 			if(list != null) {
 				if(StringUtil.isInteger(args[1])) {
 					if(list.removeMessage(Integer.valueOf(args[1]))) {
-						sender.sendMessage(ChatColor.GREEN + "Message removed!");
-
 						MessageLists.schedule();
 						AutoMessage.getPlugin().saveConfiguration();
+						
+						sender.sendMessage(ChatColor.GREEN + "Message removed!");
 					} else {
 						sender.sendMessage(ChatColor.RED + "The specified index does not exist!");
 					}
@@ -116,9 +118,10 @@ public class PluginCommands {
 
 		if(list != null) {
 			list.setEnabled(!(list.isEnabled()));
-			sender.sendMessage(ChatColor.GREEN + "Enabled: " + ChatColor.YELLOW + list.isEnabled() + ChatColor.GREEN + "!");
-
+			
 			AutoMessage.getPlugin().saveConfiguration();
+
+			sender.sendMessage(ChatColor.GREEN + "Enabled: " + ChatColor.YELLOW + list.isEnabled() + ChatColor.GREEN + "!");
 		} else {
 			sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
 		}
@@ -131,10 +134,11 @@ public class PluginCommands {
 		if(list != null) {
 			if(StringUtil.isInteger(args[1])) {
 				list.setInterval(Integer.valueOf(args[1]));
-				sender.sendMessage(ChatColor.GREEN + "Interval: " + ChatColor.YELLOW + Integer.valueOf(args[1]) + ChatColor.GREEN + "!");
-
+				
 				MessageLists.schedule();
 				AutoMessage.getPlugin().saveConfiguration();
+				
+				sender.sendMessage(ChatColor.GREEN + "Interval: " + ChatColor.YELLOW + Integer.valueOf(args[1]) + ChatColor.GREEN + "!");
 			} else {
 				sender.sendMessage(ChatColor.RED + "The interval must be an Integer!");
 			}
@@ -159,13 +163,13 @@ public class PluginCommands {
 					list.setExpiry(System.currentTimeMillis() + StringUtil.parseTime(args[1]));
 				}
 
+				AutoMessage.getPlugin().saveConfiguration();
+				
 				if(list.getExpiry() != -1) {
 					sender.sendMessage(ChatColor.GREEN + "Expires in " + ChatColor.YELLOW + StringUtil.millisToLongDHMS(list.getExpiry() - System.currentTimeMillis()) + ChatColor.GREEN + "!");
 				} else {
 					sender.sendMessage(ChatColor.GREEN + "Expiry disabled!");
 				}
-
-				AutoMessage.getPlugin().saveConfiguration();
 			} catch (NumberFormatException e) {
 				sender.sendMessage(ChatColor.RED + "Illegal Format. To disable use -1.");
 			}
@@ -180,9 +184,10 @@ public class PluginCommands {
 
 		if(list != null) {
 			list.setRandom(!(list.isRandom()));
-			sender.sendMessage(ChatColor.GREEN + "Random: " + ChatColor.YELLOW + list.isRandom() + ChatColor.GREEN + "!");
-
+			
 			AutoMessage.getPlugin().saveConfiguration();
+			
+			sender.sendMessage(ChatColor.GREEN + "Random: " + ChatColor.YELLOW + list.isRandom() + ChatColor.GREEN + "!");
 		} else {
 			sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
 		}
@@ -195,14 +200,16 @@ public class PluginCommands {
 		if(list != null) {
 			if(args.length == 1) {
 				list.setPrefix("");
-				sender.sendMessage(ChatColor.GREEN + "Prefix updated!");
-
+				
 				AutoMessage.getPlugin().saveConfiguration();
+				
+				sender.sendMessage(ChatColor.GREEN + "Prefix updated!");
 			} else {
 				list.setPrefix(StringUtil.concat(args, 1, args.length) + " ");
-				sender.sendMessage(ChatColor.GREEN + "Prefix updated!");
 
 				AutoMessage.getPlugin().saveConfiguration();
+				
+				sender.sendMessage(ChatColor.GREEN + "Prefix updated!");
 			}
 		} else {
 			sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
@@ -216,14 +223,16 @@ public class PluginCommands {
 		if(list != null) {
 			if(args.length == 1) {
 				list.setSuffix("");
-				sender.sendMessage(ChatColor.GREEN + "Suffix updated!");
 
 				AutoMessage.getPlugin().saveConfiguration();
+				
+				sender.sendMessage(ChatColor.GREEN + "Suffix updated!");
 			} else {
-				list.setSuffix(StringUtil.concat(args, 1, args.length) + " ");
-				sender.sendMessage(ChatColor.GREEN + "Suffix updated!");
+				list.setSuffix(" " + StringUtil.concat(args, 1, args.length));
 
 				AutoMessage.getPlugin().saveConfiguration();
+				
+				sender.sendMessage(ChatColor.GREEN + "Suffix updated!");
 			}
 		} else {
 			sender.sendMessage(ChatColor.RED + "The specified list does not exist!");

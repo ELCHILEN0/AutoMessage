@@ -117,6 +117,11 @@ public class AutoMessage extends JavaPlugin {
 			saveDefaultConfig();
 		}
 		
+		// TODO: Remove in a few versions ;)
+		if(getConfig().contains("settings.auto-update")) {
+			getConfig().set("settings.auto-update", null);
+		}
+		
 		for(String key : getConfig().getConfigurationSection("message-lists").getKeys(false)) {
 			getConfig().set("message-lists." + key, null);
 		}

@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.TeamNovus.AutoMessage.AutoMessage;
 import com.TeamNovus.AutoMessage.Permission;
@@ -12,6 +13,9 @@ import com.TeamNovus.AutoMessage.Commands.Core.BaseCommand;
 import com.TeamNovus.AutoMessage.Models.MessageList;
 import com.TeamNovus.AutoMessage.Models.MessageLists;
 import com.TeamNovus.AutoMessage.Util.StringUtil;
+import com.TeamNovus.AutoMessage.Util.Updater;
+import com.TeamNovus.AutoMessage.Util.Updater.UpdateResult;
+import com.TeamNovus.AutoMessage.Util.Updater.UpdateType;
 
 public class PluginCommands {
 
@@ -20,6 +24,25 @@ public class PluginCommands {
 		AutoMessage.getPlugin().loadConfig();
 
 		sender.sendMessage(ChatColor.GREEN + "Configuration reloaded from disk!");
+	}
+	
+	@BaseCommand(aliases = "update", desc = "Update to the latest version.", usage = "", permission = Permission.COMMAND_UPDATE)
+	public void onUpdateCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		if(AutoMessage.isUpdateAvailiable()) {
+			sender.sendMessage(ChatColor.GREEN + "There is an update available! Downloading update...");
+			
+			Updater updater = new Updater(AutoMessage.getPlugin(), "automessage", AutoMessage.getPlugin().getFile(), UpdateType.NO_VERSION_CHECK, true);
+
+			if(updater.getResult() == UpdateResult.SUCCESS) {
+				sender.sendMessage(ChatColor.RESET + updater.getLatestVersionString() + ChatColor.GREEN + " has been downloaded sucessfully!");
+			} else  {
+				sender.sendMessage(ChatColor.RED + "There was an error downloading " + ChatColor.RESET + updater.getLatestVersionString() + ChatColor.RED + "!");
+			}
+		} else {
+			PluginDescriptionFile desc = AutoMessage.getPlugin().getDescription();
+			
+			sender.sendMessage(ChatColor.RESET + desc.getName() + " v" + desc.getVersion() + ChatColor.GREEN + " is up  to date!");
+		}
 	}
 
 	@BaseCommand(aliases = "add", desc = "Add a list or message to a list.", usage = "<List> [Index] [Message]", min = 1, permission = Permission.COMMAND_ADD)

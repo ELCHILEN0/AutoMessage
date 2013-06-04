@@ -3,6 +3,7 @@ package com.TeamNovus.AutoMessage;
 import org.bukkit.command.CommandSender;
 
 public enum Permission {
+	COMMAND_UPDATE("commands.update"),
 	COMMAND_RELOAD("commands.reload"),
 	COMMAND_ADD("commands.add"),
 	COMMAND_EDIT("commands.edit"),

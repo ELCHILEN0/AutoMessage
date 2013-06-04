@@ -3,6 +3,7 @@ package com.TeamNovus.AutoMessage;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.TeamNovus.AutoMessage.Util.Metrics;
@@ -13,11 +14,16 @@ import com.TeamNovus.AutoMessage.Commands.DefaultCommands;
 import com.TeamNovus.AutoMessage.Commands.PluginCommands;
 import com.TeamNovus.AutoMessage.Commands.Core.BaseCommandExecutor;
 import com.TeamNovus.AutoMessage.Commands.Core.CommandManager;
+import com.TeamNovus.AutoMessage.Listeners.UpdateListener;
 import com.TeamNovus.AutoMessage.Models.MessageList;
 import com.TeamNovus.AutoMessage.Models.MessageLists;
 
 public class AutoMessage extends JavaPlugin {
 	private static AutoMessage plugin;
+	
+	// AutoUpdate
+	private static boolean isUpdateAvailiable = false;
+	private static String latestVersionString; 
 	
 	@Override
 	public void onEnable() {
@@ -34,22 +40,16 @@ public class AutoMessage extends JavaPlugin {
 		loadConfig();
 		
 		// Check for updates.
-		if(getConfig().getBoolean("settings.auto-update")) {
-			getLogger().info("Auto-update enabled!  Checking for updates...");
-			
-			UpdateResult result = new Updater(this, "automessage", this.getFile(), UpdateType.NO_DOWNLOAD, false).getResult();
-			switch (result) {
-			case UPDATE_AVAILABLE:
-				getLogger().info("An update is available for a download! Automatically downloading...");
-				new Updater(this, "automessage", this.getFile(), UpdateType.DEFAULT, true);
-				getLogger().info("Update downloaded and installed! Restart server for changes to take effect!");
-				break; 
+		Updater updater = new Updater(this, "automessage", this.getFile(), UpdateType.NO_DOWNLOAD, false);
 
-			default:
-				getLogger().info("There are no availiable updates for download.");
-				break;
-			}
+		if(updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
+			isUpdateAvailiable = true;
 		}
+
+		latestVersionString = updater.getLatestVersionString();
+		
+		// Register Listeners.
+		Bukkit.getPluginManager().registerEvents(new UpdateListener(), this);
 		
 		// Start metrics.
 		try {
@@ -135,5 +135,17 @@ public class AutoMessage extends JavaPlugin {
 	
 	public static AutoMessage getPlugin() {
 		return plugin;
+	}
+	
+	public File getFile() {
+		return super.getFile();
+	}
+	
+	public static boolean isUpdateAvailiable() {
+		return isUpdateAvailiable;
+	}
+	
+	public static String getLatestVersionString() {
+		return latestVersionString;
 	}
 }

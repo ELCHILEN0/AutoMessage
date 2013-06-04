@@ -3,7 +3,6 @@ package com.TeamNovus.AutoMessage;
 import java.io.File;
 import java.io.IOException;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.TeamNovus.AutoMessage.Util.Metrics;
@@ -14,7 +13,6 @@ import com.TeamNovus.AutoMessage.Commands.DefaultCommands;
 import com.TeamNovus.AutoMessage.Commands.PluginCommands;
 import com.TeamNovus.AutoMessage.Commands.Core.BaseCommandExecutor;
 import com.TeamNovus.AutoMessage.Commands.Core.CommandManager;
-import com.TeamNovus.AutoMessage.Listeners.UpdateListener;
 import com.TeamNovus.AutoMessage.Models.MessageList;
 import com.TeamNovus.AutoMessage.Models.MessageLists;
 
@@ -42,14 +40,17 @@ public class AutoMessage extends JavaPlugin {
 		// Check for updates.
 		Updater updater = new Updater(this, "automessage", this.getFile(), UpdateType.NO_DOWNLOAD, false);
 
-		if(updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
-			isUpdateAvailiable = true;
-		}
-
 		latestVersionString = updater.getLatestVersionString();
 		
-		// Register Listeners.
-		Bukkit.getPluginManager().registerEvents(new UpdateListener(), this);
+		if(updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
+			isUpdateAvailiable = true;
+			
+			getLogger().info("An update is available for download: " + latestVersionString);
+			getLogger().info("To update type: /am update");
+		} else {
+			getLogger().info(latestVersionString + " is up to date!");
+		}
+
 		
 		// Start metrics.
 		try {

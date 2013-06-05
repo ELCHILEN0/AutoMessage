@@ -24,7 +24,7 @@ public class BroadcastTask implements Runnable {
 			if(list.isEnabled() && list.hasMessages() && !(list.isExpired())) {
 				if(Bukkit.getServer().getOnlinePlayers().length >= AutoMessage.getPlugin().getConfig().getInt("settings.min-players")) {
 					int index = list.isRandom() ? new Random().nextInt(list.getMessages().size()) : list.getCurrentIndex();
-					
+
 					for(Player p : Bukkit.getServer().getOnlinePlayers()) {
 						if(p.hasPermission("automessage.receive." + name)) {
 							list.broadcastTo(index, p);

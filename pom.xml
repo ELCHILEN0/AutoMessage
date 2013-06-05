@@ -5,7 +5,7 @@
 	<groupId>com.TeamNovus.AutoMessage</groupId>
 	<artifactId>AutoMessage</artifactId>
 	<name>AutoMessage</name>
-	<version>2.3.2</version>
+	<version>2.3.1</version>
 	<url>http://www.novuscraft.org</url>
 
 	<build>

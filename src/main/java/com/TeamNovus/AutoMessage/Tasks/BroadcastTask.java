@@ -1,5 +1,7 @@
 package com.TeamNovus.AutoMessage.Tasks;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -19,9 +21,9 @@ public class BroadcastTask implements Runnable {
 		if(MessageLists.getExactList(name) != null && AutoMessage.getPlugin().getConfig().getBoolean("settings.enabled")) {
 			MessageList list = MessageLists.getExactList(name);
 
-			if(list.isEnabled() && !(list.isExpired()) && list.getCurrentMessage() != null) {
+			if(list.isEnabled() && list.hasMessages() && !(list.isExpired())) {
 				if(Bukkit.getServer().getOnlinePlayers().length >= AutoMessage.getPlugin().getConfig().getInt("settings.min-players")) {
-					int index = list.getCurrentIndex();
+					int index = list.isRandom() ? new Random().nextInt(list.getMessages().size()) : list.getCurrentIndex();
 					
 					for(Player p : Bukkit.getServer().getOnlinePlayers()) {
 						if(p.hasPermission("automessage.receive." + name)) {
@@ -33,7 +35,7 @@ public class BroadcastTask implements Runnable {
 						list.broadcastTo(index, Bukkit.getConsoleSender());
 					}
 					
-					list.setCurrentIndex(index++);
+					list.setCurrentIndex(index + 1);
 				}
 			}
 		}

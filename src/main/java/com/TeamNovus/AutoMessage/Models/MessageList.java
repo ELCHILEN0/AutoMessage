@@ -3,7 +3,6 @@ package com.TeamNovus.AutoMessage.Models;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -123,24 +122,16 @@ public class MessageList {
 		}
 	}
 	
-	public String getCurrentMessage() {
-		if(currentIndex >= messages.size()) {
-			currentIndex = 0;
-		}
-		
-		if(random) {
-			currentIndex = new Random().nextInt(messages.size());
-		}
-		
-		try {
-			return messages.get(currentIndex);
-		} catch (IndexOutOfBoundsException e) {
-			return null;
-		}
+	public boolean hasMessages() {
+		return messages.size() > 0;
 	}
 	
-	public void setCurrentIndex(int currentIndex) {
-		this.currentIndex = currentIndex;
+	public void setCurrentIndex(int index) {
+		this.currentIndex = index;
+		
+		if(currentIndex >= messages.size() || currentIndex < 0) {
+			this.currentIndex = 0;
+		}
 	}
 	
 	public int getCurrentIndex() {
@@ -176,19 +167,31 @@ public class MessageList {
 			
 			for(String message : messages) {
 				if(to instanceof Player) {
-					message = message.replace("{NAME}", 			((Player) to).getName());
-					message = message.replace("{DISPLAYNAME}", 		((Player) to).getDisplayName());
-					message = message.replace("{WORLD}", 			((Player) to).getWorld().getName());
-					message = message.replace("{BIOME}", 			((Player) to).getLocation().getBlock().getBiome().toString());
-					message = message.replace("{ONLINE}", 			Bukkit.getServer().getOnlinePlayers().length + "");
-					message = message.replace("{MAX_ONLINE}", 		Bukkit.getServer().getMaxPlayers() + "");						
+					if(message.contains("{NAME}"))
+						message = message.replace("{NAME}", 		((Player) to).getName());
+					if(message.contains("{DISPLAY_NAME}"))
+						message = message.replace("{DISPLAY_NAME}", ((Player) to).getDisplayName());
+					if(message.contains("{WORLD}"))
+						message = message.replace("{WORLD}", 		((Player) to).getWorld().getName());
+					if(message.contains("{BIOME}"))
+						message = message.replace("{BIOME}", 		((Player) to).getLocation().getBlock().getBiome().toString());
+					if(message.contains("{ONLINE}"))
+						message = message.replace("{ONLINE}", 		Bukkit.getServer().getOnlinePlayers().length + "");
+					if(message.contains("{MAX_ONLINE}"))
+						message = message.replace("{MAX_ONLINE}", 	Bukkit.getServer().getMaxPlayers() + "");						
 				} else if(to instanceof ConsoleCommandSender) {
-					message = message.replace("{NAME}", 			"CONSOLE");
-					message = message.replace("{DISPLAYNAME}", 		"CONSOLE");
-					message = message.replace("{WORLD}", 			"UNKNOWN");
-					message = message.replace("{BIOME}", 			"UNKNOWN");
-					message = message.replace("{ONLINE}", 			Bukkit.getServer().getOnlinePlayers().length + "");
-					message = message.replace("{MAX_ONLINE}", 		Bukkit.getServer().getMaxPlayers() + "");						
+					if(message.contains("{NAME}"))
+						message = message.replace("{NAME}", 		"CONSOLE");
+					if(message.contains("{DISPLAY_NAME}"))
+						message = message.replace("{DISPLAY_NAME}", "CONSOLE");
+					if(message.contains("{WORLD}"))
+						message = message.replace("{WORLD}", 		"UNKNOWN");
+					if(message.contains("{BIOME}"))
+						message = message.replace("{BIOME}", 		"UNKNOWN");
+					if(message.contains("{ONLINE}"))
+						message = message.replace("{ONLINE}", 		Bukkit.getServer().getOnlinePlayers().length + "");
+					if(message.contains("{MAX_ONLINE}"))
+						message = message.replace("{MAX_ONLINE}", 	Bukkit.getServer().getMaxPlayers() + "");						
 				}
 				
 				to.sendMessage(ChatColor.translateAlternateColorCodes("&".charAt(0), message));

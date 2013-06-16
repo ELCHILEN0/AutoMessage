@@ -2,6 +2,7 @@ package com.TeamNovus.AutoMessage.Models;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -174,25 +175,45 @@ public class MessageList {
 					if(message.contains("{WORLD}"))
 						message = message.replace("{WORLD}", 		((Player) to).getWorld().getName());
 					if(message.contains("{BIOME}"))
-						message = message.replace("{BIOME}", 		((Player) to).getLocation().getBlock().getBiome().toString());
-					if(message.contains("{ONLINE}"))
-						message = message.replace("{ONLINE}", 		Bukkit.getServer().getOnlinePlayers().length + "");
-					if(message.contains("{MAX_ONLINE}"))
-						message = message.replace("{MAX_ONLINE}", 	Bukkit.getServer().getMaxPlayers() + "");						
+						message = message.replace("{BIOME}", 		((Player) to).getLocation().getBlock().getBiome().toString());	
 				} else if(to instanceof ConsoleCommandSender) {
 					if(message.contains("{NAME}"))
-						message = message.replace("{NAME}", 		"CONSOLE");
+						message = message.replace("{NAME}", 		to.getName());
 					if(message.contains("{DISPLAY_NAME}"))
-						message = message.replace("{DISPLAY_NAME}", "CONSOLE");
+						message = message.replace("{DISPLAY_NAME}", to.getName());
 					if(message.contains("{WORLD}"))
 						message = message.replace("{WORLD}", 		"UNKNOWN");
 					if(message.contains("{BIOME}"))
-						message = message.replace("{BIOME}", 		"UNKNOWN");
-					if(message.contains("{ONLINE}"))
-						message = message.replace("{ONLINE}", 		Bukkit.getServer().getOnlinePlayers().length + "");
-					if(message.contains("{MAX_ONLINE}"))
-						message = message.replace("{MAX_ONLINE}", 	Bukkit.getServer().getMaxPlayers() + "");						
+						message = message.replace("{BIOME}", 		"UNKNOWN");						
 				}
+				
+				if(message.contains("{ONLINE}"))
+					message = message.replace("{ONLINE}", 		Bukkit.getServer().getOnlinePlayers().length + "");
+				if(message.contains("{MAX_ONLINE}"))
+					message = message.replace("{MAX_ONLINE}", 	Bukkit.getServer().getMaxPlayers() + "");
+				if(message.contains("{UNIQUE_PLAYERS}"))
+					message = message.replace("{UNIQUE_PLAYERS}", Bukkit.getServer().getOfflinePlayers().length + "");
+				
+				if(message.contains("{YEAR}"))
+					message = message.replace("{YEAR}", Calendar.getInstance().get(Calendar.YEAR) + "");
+				if(message.contains("{MONTH}"))
+					message = message.replace("{MONTH}", Calendar.getInstance().get(Calendar.MONTH) + "");
+				if(message.contains("{MONTH}"))
+					message = message.replace("{MONTH}", Calendar.getInstance().get(Calendar.MONTH) + "");
+				if(message.contains("{DAY_OF_WEEK}"))
+					message = message.replace("{DAY_OF_WEEK}", Calendar.getInstance().get(Calendar.DAY_OF_WEEK) + "");
+				if(message.contains("{DAY_OF_MONTH}"))
+					message = message.replace("{DAY_OF_MONTH}", Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "");
+				if(message.contains("{DAY_OF_YEAR}"))
+					message = message.replace("{DAY_OF_YEAR}", Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + "");
+				if(message.contains("{HOUR}"))
+					message = message.replace("{HOUR}", Calendar.getInstance().get(Calendar.HOUR) + "");
+				if(message.contains("{HOUR_OF_DAY}"))
+					message = message.replace("{HOUR_OF_DAY}", Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + "");
+				if(message.contains("{MINUTE}"))
+					message = message.replace("{MINUTE}", Calendar.getInstance().get(Calendar.MINUTE) + "");
+				if(message.contains("{SECOND}"))
+					message = message.replace("{SECOND}", Calendar.getInstance().get(Calendar.SECOND) + "");
 				
 				to.sendMessage(ChatColor.translateAlternateColorCodes("&".charAt(0), message));
 			}

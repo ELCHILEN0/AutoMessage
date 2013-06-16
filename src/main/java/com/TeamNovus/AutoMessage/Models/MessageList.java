@@ -198,8 +198,10 @@ public class MessageList {
 					message = message.replace("{YEAR}", Calendar.getInstance().get(Calendar.YEAR) + "");
 				if(message.contains("{MONTH}"))
 					message = message.replace("{MONTH}", Calendar.getInstance().get(Calendar.MONTH) + "");
-				if(message.contains("{MONTH}"))
-					message = message.replace("{MONTH}", Calendar.getInstance().get(Calendar.MONTH) + "");
+				if(message.contains("{WEEK_OF_MONTH}"))
+					message = message.replace("{WEEK_OF_MONTH}", Calendar.getInstance().get(Calendar.WEEK_OF_MONTH) + "");
+				if(message.contains("{WEEK_OF_YEAR}"))
+					message = message.replace("{WEEK_OF_YEAR}", Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) + "");
 				if(message.contains("{DAY_OF_WEEK}"))
 					message = message.replace("{DAY_OF_WEEK}", Calendar.getInstance().get(Calendar.DAY_OF_WEEK) + "");
 				if(message.contains("{DAY_OF_MONTH}"))

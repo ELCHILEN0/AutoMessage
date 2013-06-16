@@ -6,9 +6,6 @@ import java.io.IOException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.TeamNovus.AutoMessage.Util.Metrics;
-import com.TeamNovus.AutoMessage.Util.Updater;
-import com.TeamNovus.AutoMessage.Util.Updater.UpdateResult;
-import com.TeamNovus.AutoMessage.Util.Updater.UpdateType;
 import com.TeamNovus.AutoMessage.Commands.DefaultCommands;
 import com.TeamNovus.AutoMessage.Commands.PluginCommands;
 import com.TeamNovus.AutoMessage.Commands.Core.BaseCommandExecutor;
@@ -18,10 +15,6 @@ import com.TeamNovus.AutoMessage.Models.MessageLists;
 
 public class AutoMessage extends JavaPlugin {
 	private static AutoMessage plugin;
-	
-	// AutoUpdate
-	private static boolean isUpdateAvailiable = false;
-	private static String latestVersionString; 
 	
 	@Override
 	public void onEnable() {
@@ -36,21 +29,6 @@ public class AutoMessage extends JavaPlugin {
 		
 		// Load the configuration.
 		loadConfig();
-		
-		// Check for updates.
-		Updater updater = new Updater(this, "automessage", this.getFile(), UpdateType.NO_DOWNLOAD, false);
-
-		latestVersionString = updater.getLatestVersionString();
-		
-		if(updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
-			isUpdateAvailiable = true;
-			
-			getLogger().info("An update is available for download: " + latestVersionString);
-			getLogger().info("To update type: /am update");
-		} else {
-			getLogger().info(latestVersionString + " is up to date!");
-		}
-
 		
 		// Start metrics.
 		try {
@@ -145,13 +123,5 @@ public class AutoMessage extends JavaPlugin {
 	
 	public File getFile() {
 		return super.getFile();
-	}
-	
-	public static boolean isUpdateAvailiable() {
-		return isUpdateAvailiable;
-	}
-	
-	public static String getLatestVersionString() {
-		return latestVersionString;
 	}
 }

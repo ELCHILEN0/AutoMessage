@@ -28,12 +28,13 @@ public class PluginCommands {
 	
 	@BaseCommand(aliases = "update", desc = "Update to the latest version.", usage = "", permission = Permission.COMMAND_UPDATE)
 	public void onUpdateCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		if(AutoMessage.isUpdateAvailiable()) {
+		Updater updater = new Updater(AutoMessage.getPlugin(), "automessage", AutoMessage.getPlugin().getFile(), UpdateType.NO_DOWNLOAD, false);
+		
+		if(updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
 			sender.sendMessage(ChatColor.GREEN + "There is an update available! Downloading update...");
 			
-			Updater updater = new Updater(AutoMessage.getPlugin(), "automessage", AutoMessage.getPlugin().getFile(), UpdateType.NO_VERSION_CHECK, true);
-
-			if(updater.getResult() == UpdateResult.SUCCESS) {
+			UpdateResult result = new Updater(AutoMessage.getPlugin(), "automessage", AutoMessage.getPlugin().getFile(), UpdateType.NO_VERSION_CHECK, true).getResult();
+			if(result == UpdateResult.SUCCESS) {
 				sender.sendMessage(ChatColor.RESET + updater.getLatestVersionString() + ChatColor.GREEN + " has been downloaded sucessfully!");
 			} else  {
 				sender.sendMessage(ChatColor.RED + "There was an error downloading " + ChatColor.RESET + updater.getLatestVersionString() + ChatColor.RED + "!");

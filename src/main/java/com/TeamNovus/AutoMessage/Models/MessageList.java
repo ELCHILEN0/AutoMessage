@@ -18,7 +18,7 @@ public class MessageList {
 	private long expiry = -1L;
 	private boolean random = false;
 	private String prefix = "[&bPrefix&r] ";
-	private String suffix = "[&4Suffix&r]";
+	private String suffix = " [&4Suffix&r]";
 	private List<String> messages = new ArrayList<String>();
 	
 	private transient int currentIndex = 0;

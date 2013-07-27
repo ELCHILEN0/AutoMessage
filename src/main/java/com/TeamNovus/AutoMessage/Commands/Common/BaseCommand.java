@@ -1,4 +1,4 @@
-package com.TeamNovus.AutoMessage.Commands.Core;
+package com.TeamNovus.AutoMessage.Commands.Common;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

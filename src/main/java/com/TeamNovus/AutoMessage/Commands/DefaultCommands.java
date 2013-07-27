@@ -6,8 +6,8 @@ import org.bukkit.command.CommandSender;
 
 import com.TeamNovus.AutoMessage.Permission;
 import com.TeamNovus.AutoMessage.AutoMessage;
-import com.TeamNovus.AutoMessage.Commands.Core.BaseCommand;
-import com.TeamNovus.AutoMessage.Commands.Core.CommandManager;
+import com.TeamNovus.AutoMessage.Commands.Common.BaseCommand;
+import com.TeamNovus.AutoMessage.Commands.Common.CommandManager;
 import com.TeamNovus.AutoMessage.Util.StringUtil;
 
 public class DefaultCommands {

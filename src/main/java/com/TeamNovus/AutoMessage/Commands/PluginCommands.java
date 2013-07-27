@@ -9,7 +9,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.TeamNovus.AutoMessage.AutoMessage;
 import com.TeamNovus.AutoMessage.Permission;
-import com.TeamNovus.AutoMessage.Commands.Core.BaseCommand;
+import com.TeamNovus.AutoMessage.Commands.Common.BaseCommand;
 import com.TeamNovus.AutoMessage.Models.MessageList;
 import com.TeamNovus.AutoMessage.Models.MessageLists;
 import com.TeamNovus.AutoMessage.Util.StringUtil;

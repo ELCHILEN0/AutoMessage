@@ -8,8 +8,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.TeamNovus.AutoMessage.Util.Metrics;
 import com.TeamNovus.AutoMessage.Commands.DefaultCommands;
 import com.TeamNovus.AutoMessage.Commands.PluginCommands;
-import com.TeamNovus.AutoMessage.Commands.Core.BaseCommandExecutor;
-import com.TeamNovus.AutoMessage.Commands.Core.CommandManager;
+import com.TeamNovus.AutoMessage.Commands.Common.BaseCommandExecutor;
+import com.TeamNovus.AutoMessage.Commands.Common.CommandManager;
 import com.TeamNovus.AutoMessage.Models.MessageList;
 import com.TeamNovus.AutoMessage.Models.MessageLists;
 
@@ -114,6 +114,7 @@ public class AutoMessage extends JavaPlugin {
 			getConfig().set("message-lists." + key + ".suffix", list.getSuffix());
 			getConfig().set("message-lists." + key + ".messages", list.getMessages());
 		}
+		
 		saveConfig();
 	}
 	

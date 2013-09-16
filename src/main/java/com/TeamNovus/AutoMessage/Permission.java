@@ -29,7 +29,7 @@ public enum Permission {
 	}
 	
 	private static String getPermission(Permission permission) {
-		return "supernaturals." + permission.getNode();
+		return "automessage." + permission.getNode();
 	}
 	
 	public static Boolean has(Permission permission, CommandSender target) {

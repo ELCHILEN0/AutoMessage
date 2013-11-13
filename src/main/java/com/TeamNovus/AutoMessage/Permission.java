@@ -43,7 +43,7 @@ public enum Permission {
 				return true;
 			if(list == null || "".equals(list))
 				return false;
-			return target.hasPermission("automessage." + permission.node + list);
+			return target.hasPermission("automessage." + permission.node + "." + list);
 		}
 		return target.hasPermission("automessage." + permission.node);
 	}

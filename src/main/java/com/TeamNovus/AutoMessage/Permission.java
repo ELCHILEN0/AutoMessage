@@ -22,7 +22,7 @@ public enum Permission {
 	private final boolean multi;
 	
 	private Permission(String node, boolean multi) {
-		this.node = node;
+		this.node = "automessage." + node;
 		this.multi = multi;
 	}
 	
@@ -32,19 +32,19 @@ public enum Permission {
 
 	public static Boolean has(Permission permission, CommandSender target) {
 		if(permission.multi)
-			return target.hasPermission("automessage." + permission.node + ".*");
-		return target.hasPermission("automessage." + permission.node);
+			return target.hasPermission(permission.node + ".*");
+		return target.hasPermission(permission.node);
 	}
 
 	public static Boolean has(Permission permission, CommandSender target, String list) {
 		if(permission.multi)
 		{
-			if(target.hasPermission("automessage." + permission.node + ".*"))
+			if(target.hasPermission(permission.node + ".*"))
 				return true;
 			if(list == null || "".equals(list))
-				return false;
-			return target.hasPermission("automessage." + permission.node + "." + list);
+				return target.hasPermission(permission.node);
+			return target.hasPermission(permission.node + "." + list);
 		}
-		return target.hasPermission("automessage." + permission.node);
+		return target.hasPermission(permission.node);
 	}
 }

@@ -136,7 +136,7 @@ public class PluginCommands {
 		}
 	}
 
-	@BaseCommand(aliases = "enabled", desc = "Toggle broadcasting for a list.", usage = "<List>", min = 1, max = 1, permission = Permission.COMMAND_ENABLE)
+	@BaseCommand(aliases = "enable", desc = "Toggle broadcasting for a list.", usage = "<List>", min = 1, max = 1, permission = Permission.COMMAND_ENABLE)
 	public void onEnableCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		MessageList list = MessageLists.getBestList(args[0]);
 
@@ -287,7 +287,7 @@ public class PluginCommands {
 	@BaseCommand(aliases = "list", desc = "List all lists or messages in a list.", usage = "[List]", max = 1, permission = Permission.COMMAND_LIST)
 	public void onListCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		if(args.length == 0) {
-			if(MessageLists.getMessageLists().keySet().size() != 0) {
+			if(!MessageLists.getMessageLists().keySet().isEmpty()) {
 				sender.sendMessage(ChatColor.DARK_RED + "Availiable Lists:");
 				
 				for(String key : MessageLists.getMessageLists().keySet()) {

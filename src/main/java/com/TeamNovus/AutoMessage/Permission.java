@@ -3,36 +3,48 @@ package com.TeamNovus.AutoMessage;
 import org.bukkit.command.CommandSender;
 
 public enum Permission {
-	COMMAND_UPDATE("commands.update"),
-	COMMAND_RELOAD("commands.reload"),
-	COMMAND_ADD("commands.add"),
-	COMMAND_EDIT("commands.edit"),
-	COMMAND_REMOVE("commands.remove"),
-	COMMAND_ENABLE("commands.enable"),
-	COMMAND_INTERVAL("commands.interval"),
-	COMMAND_EXPIRY("commands.expiry"),
-	COMMAND_RANDOM("commands.random"),
-	COMMAND_PREFIX("commands.prefix"),
-	COMMAND_SUFFIX("commands.suffix"),
-	COMMAND_BROADCAST("commands.broadcast"),
-	COMMAND_LIST("commands.list"),
-	NONE("");
+	COMMAND_ADD      ("lists.add",       true),
+	COMMAND_EDIT     ("lists.edit",      true),
+	COMMAND_REMOVE   ("lists.remove",    true),
+	COMMAND_ENABLE   ("lists.enable",    true),
+	COMMAND_INTERVAL ("lists.interval",  true),
+	COMMAND_EXPIRY   ("lists.expiry",    true),
+	COMMAND_RANDOM   ("lists.random",    true),
+	COMMAND_PREFIX   ("lists.prefix",    true),
+	COMMAND_SUFFIX   ("lists.suffix",    true),
+	COMMAND_BROADCAST("lists.broadcast", true),
+	COMMAND_LIST     ("lists.list",      true),
+	COMMAND_UPDATE   ("update", false),
+	COMMAND_RELOAD   ("reload", false),
+	NONE("", false);
 	
-	private String node;
+	private final String node;
+	private final boolean multi;
 	
-	private Permission(String node) {
+	private Permission(String node, boolean multi) {
 		this.node = node;
+		this.multi = multi;
 	}
 	
-	public String getNode() {
-		return node;
+	public boolean isMulti() {
+		return multi;
 	}
-	
-	private static String getPermission(Permission permission) {
-		return "automessage." + permission.getNode();
-	}
-	
+
 	public static Boolean has(Permission permission, CommandSender target) {
-		return target.hasPermission(getPermission(permission));
+		if(permission.multi)
+			return target.hasPermission("automessage." + permission.node + ".*");
+		return target.hasPermission("automessage." + permission.node);
+	}
+
+	public static Boolean has(Permission permission, CommandSender target, String list) {
+		if(permission.multi)
+		{
+			if(target.hasPermission("automessage." + permission.node + ".*"))
+				return true;
+			if(list == null || "".equals(list))
+				return false;
+			return target.hasPermission("automessage." + permission.node + list);
+		}
+		return target.hasPermission("automessage." + permission.node);
 	}
 }

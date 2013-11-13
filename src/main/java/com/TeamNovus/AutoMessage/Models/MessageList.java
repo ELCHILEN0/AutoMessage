@@ -24,7 +24,7 @@ public class MessageList {
 	private transient int currentIndex = 0;
 	
 	public MessageList() {
-	    messages.add(new String("This is a &amessage&r in a &amessage-list&r!"));
+	    messages.add("This is a &amessage&r in a &amessage-list&r!");
 	}
 	
 	public boolean isEnabled() {
@@ -220,11 +220,9 @@ public class MessageList {
 				to.sendMessage(ChatColor.translateAlternateColorCodes("&".charAt(0), message));
 			}
 			
-			for(String command : commands) {
-				if(to instanceof ConsoleCommandSender) {
+			for(String command : commands)
+				if(to instanceof ConsoleCommandSender)
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-				}
-			}
 		}
 	}
 }

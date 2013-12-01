@@ -10,6 +10,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import com.TeamNovus.AutoMessage.AutoMessage;
 import com.TeamNovus.AutoMessage.Permission;
 import com.TeamNovus.AutoMessage.Commands.Common.BaseCommand;
+import com.TeamNovus.AutoMessage.Models.Message;
 import com.TeamNovus.AutoMessage.Models.MessageList;
 import com.TeamNovus.AutoMessage.Models.MessageLists;
 import com.TeamNovus.AutoMessage.Util.StringUtil;
@@ -64,9 +65,13 @@ public class PluginCommands {
 			if(list != null) {
 				if(args.length >= 2) {
 					if(args.length >= 3 && StringUtil.isInteger(args[1]) ) {
-						list.addMessage(Integer.valueOf(args[1]), StringUtil.concat(args, 2, args.length));
+						Message message = new Message(StringUtil.concat(args, 2, args.length));
+						
+						list.addMessage(Integer.valueOf(args[1]), message);
 					} else {
-						list.addMessage(StringUtil.concat(args, 1, args.length));
+						Message message = new Message(StringUtil.concat(args, 1, args.length));
+
+						list.addMessage(message);
 					}
 
 					AutoMessage.getPlugin().saveConfiguration();
@@ -87,7 +92,9 @@ public class PluginCommands {
 
 		if(list != null) {
 			if(StringUtil.isInteger(args[1])) {
-				if(list.editMessage(Integer.valueOf(args[1]), StringUtil.concat(args, 2, args.length))) {
+				Message message = new Message(StringUtil.concat(args, 2, args.length));
+				
+				if(list.editMessage(Integer.valueOf(args[1]), message)) {
 					AutoMessage.getPlugin().saveConfiguration();
 					
 					sender.sendMessage(ChatColor.GREEN + "Message edited!");
@@ -302,11 +309,14 @@ public class PluginCommands {
 			if(list != null) {
 				sender.sendMessage(ChatColor.DARK_RED + MessageLists.getBestKey(args[0]));
 				
-				List<String> messages = list.getMessages();
+				List<Message> messages = list.getMessages();
 				for (int i = 0; i < messages.size(); i++) {
-					sender.sendMessage(ChatColor.YELLOW + "" + i + ": " + ChatColor.RESET + ChatColor.translateAlternateColorCodes("&".charAt(0), list.getPrefix() + messages.get(i) + list.getSuffix()));
+					sender.sendMessage(ChatColor.YELLOW + "" + i + ": " + ChatColor.RESET + ChatColor.translateAlternateColorCodes("&".charAt(0), list.getPrefix() + messages.get(i).getFormat() + list.getSuffix()));
+					
+					for(int j = 0; j < messages.get(i).getArguments().size(); j++) {
+						sender.sendMessage(" Argument #" + j + ":" + messages.get(i).getArguments().get(j));
+					}
 				}
-				
 			} else {
 				sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
 			}

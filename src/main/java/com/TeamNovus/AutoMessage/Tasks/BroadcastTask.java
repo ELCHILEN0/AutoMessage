@@ -3,6 +3,7 @@ package com.TeamNovus.AutoMessage.Tasks;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.TeamNovus.AutoMessage.AutoMessage;
@@ -28,6 +29,8 @@ public class BroadcastTask implements Runnable {
 					for(Player p : Bukkit.getServer().getOnlinePlayers()) {
 						if(p.hasPermission("automessage.receive." + name)) {
 							list.broadcastTo(index, p);
+							p.sendMessage(ChatColor.translateAlternateColorCodes("&".charAt(0),
+									String.format("%10s%33s%10s%n%1s%51s%1s%n%30s", "---------[", "&bAutoMessage&r", "]---------", "&4|&r", "", "&4|&r", "--------------------------------")));
 						}
 					}
 

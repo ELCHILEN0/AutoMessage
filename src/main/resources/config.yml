@@ -35,4 +35,6 @@ message-lists:
     prefix: '[&bPrefix&r]\n'
     suffix: '\n[&4Suffix&r] '
     messages:
-    - 'This message will be displayed only to users with \nautomessage.receive.vip!'
+    - 'Message Format':
+      - 'First Formatter'
+      - 'Second Formatter'

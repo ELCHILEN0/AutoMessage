@@ -2,6 +2,11 @@ package com.TeamNovus.AutoMessage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -10,6 +15,7 @@ import com.TeamNovus.AutoMessage.Commands.DefaultCommands;
 import com.TeamNovus.AutoMessage.Commands.PluginCommands;
 import com.TeamNovus.AutoMessage.Commands.Common.BaseCommandExecutor;
 import com.TeamNovus.AutoMessage.Commands.Common.CommandManager;
+import com.TeamNovus.AutoMessage.Models.Message;
 import com.TeamNovus.AutoMessage.Models.MessageList;
 import com.TeamNovus.AutoMessage.Models.MessageLists;
 
@@ -42,6 +48,7 @@ public class AutoMessage extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		saveConfiguration();
 		MessageLists.unschedule();
 		
 		plugin = null;
@@ -81,9 +88,26 @@ public class AutoMessage extends JavaPlugin {
 				if(getConfig().contains("message-lists." + key + ".suffix"))
 					list.setSuffix(getConfig().getString("message-lists." + key + ".suffix"));
 				
-				if(getConfig().contains("message-lists." + key + ".messages"))
-					list.setMessages(getConfig().getStringList("message-lists." + key + ".messages"));
+				LinkedList<Message> finalMessages = new LinkedList<Message>();
+				if(getConfig().contains("message-lists." + key + ".messages")) {
+					@SuppressWarnings("unchecked")
+					List<Map<String, List<String>>> messages = (List<Map<String, List<String>>>) ((Object) getConfig().getMapList("message-lists." + key + ".messages"));
+
+					for(Map<String, List<String>> message : messages) {
+						for(Entry<String, List<String>> entry : message.entrySet()) {
+							Message m = new Message(entry.getKey());
+														
+							for(String s : entry.getValue()) {
+								m.addArgument(s);
+							}
+							
+							finalMessages.add(m);
+						}
+					}
+				}
+				list.setMessages(finalMessages);
 				
+
 				MessageLists.setList(key, list);
 			}
 			
@@ -112,7 +136,16 @@ public class AutoMessage extends JavaPlugin {
 			getConfig().set("message-lists." + key + ".random", list.isRandom());
 			getConfig().set("message-lists." + key + ".prefix", list.getPrefix());
 			getConfig().set("message-lists." + key + ".suffix", list.getSuffix());
-			getConfig().set("message-lists." + key + ".messages", list.getMessages());
+			
+			List<HashMap<String, List<String>>> messages = new LinkedList<HashMap<String,List<String>>>();
+			for(Message m : list.getMessages()) {
+				HashMap<String, List<String>> ms = new HashMap<String, List<String>>();
+				
+				ms.put(m.getFormat(), m.getArguments());
+				messages.add(ms);
+			}
+			
+			getConfig().set("message-lists." + key + ".messages", messages);
 		}
 		
 		saveConfig();

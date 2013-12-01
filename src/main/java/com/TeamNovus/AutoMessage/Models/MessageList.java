@@ -19,12 +19,15 @@ public class MessageList {
 	private boolean random = false;
 	private String prefix = "[&bPrefix&r] ";
 	private String suffix = " [&4Suffix&r]";
-	private List<String> messages = new ArrayList<String>();
+	private List<Message> messages = new ArrayList<Message>();
 	
 	private transient int currentIndex = 0;
 	
 	public MessageList() {
-	    messages.add(new String("This is a &amessage&r in a &amessage-list&r!"));
+	    messages.add(new Message("First message in the list!"));
+	    messages.add(new Message("&aSecond message in the list with formatters!"));
+	    messages.add(new Message("&bThird message in the list with formatters and a \nnew line!"));
+	    messages.add(new Message("&cFourth message in the list with %8s formatters and a \nnew line!", "advanced"));
 	}
 	
 	public boolean isEnabled() {
@@ -79,19 +82,19 @@ public class MessageList {
 		this.suffix = suffix;
 	}
 
-	public List<String> getMessages() {
+	public List<Message> getMessages() {
 		return messages;
 	}
-
-	public void setMessages(List<String> messages) {
+	
+	public void setMessages(List<Message> messages) {
 		this.messages = messages;
 	}
 	
-	public void addMessage(String message) {
+	public void addMessage(Message message) {
 		this.messages.add(message);
 	}
 	
-	public String getMessage(Integer index) {
+	public Message getMessage(Integer index) {
 		try {
 			return this.messages.get(index.intValue());
 		} catch (IndexOutOfBoundsException e) {
@@ -99,7 +102,7 @@ public class MessageList {
 		}
 	}
 	
-	public void addMessage(Integer index, String message) {
+	public void addMessage(Integer index, Message message) {
 		try {
 			this.messages.add(index.intValue(), message);
 		} catch (IndexOutOfBoundsException e) {
@@ -107,7 +110,7 @@ public class MessageList {
 		}
 	}
 	
-	public boolean editMessage(Integer index, String message) {
+	public boolean editMessage(Integer index, Message message) {
 		try {
 			return this.messages.set(index.intValue(), message) != null;
 		} catch (IndexOutOfBoundsException e) {
@@ -149,7 +152,7 @@ public class MessageList {
 	
 	public void broadcastTo(int index, CommandSender to) {
 		if(getMessage(index) != null) {
-			String[] lines = getMessage(index).split("\\\\n");
+			String[] lines = getMessage(index).getFormat().split("\\\\n");
 
 			List<String> messages = new ArrayList<String>();
 			List<String> commands = new ArrayList<String>();

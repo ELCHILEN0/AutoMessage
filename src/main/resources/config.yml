@@ -21,7 +21,7 @@ message-lists:
     interval: 45
     expiry: -1
     prefix: '[&bPrefix&r] '
-    suffix: '[&4Suffix&r]'
+    suffix: ' [&4Suffix&r]'
     messages:
     - '&1First&r message \nin the default list!'
     - '&2Second&r message \nin the default list!'

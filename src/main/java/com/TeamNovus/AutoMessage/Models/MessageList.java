@@ -1,11 +1,9 @@
 package com.TeamNovus.AutoMessage.Models;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -151,76 +149,74 @@ public class MessageList {
 	}
 	
 	public void broadcastTo(int index, CommandSender to) {
-		if(getMessage(index) != null) {
-			String[] lines = getMessage(index).getFormat().split("\\\\n");
-
-			List<String> messages = new ArrayList<String>();
-			List<String> commands = new ArrayList<String>();
+		Message message = getMessage(index);
+		
+		if(message != null) {
+			List<String> messages = message.getMessages();
+			List<String> commands = message.getCommands();
 			
-			for (String line : lines) {
-				if(line.startsWith("/")) {
-					commands.add(line.replaceFirst("/", ""));
-				} else {
-					messages.add(line);
+			for (int i = 0; i < messages.size(); i++) {
+				String m = messages.get(i);
+				
+				if(i == 0) {
+					m = getPrefix() + m;
 				}
-			}
-			
-			if(messages.size() >= 1) {
-				messages = Arrays.asList((getPrefix() + StringUtils.join(messages.toArray(), "\n") + getSuffix()).split("\\\\n"));
-			}
-			
-			for(String message : messages) {
+				
+				if(i == messages.size() - 1) {
+					m = m + getSuffix();
+				}
+				
 				if(to instanceof Player) {
-					if(message.contains("{NAME}"))
-						message = message.replace("{NAME}", 		((Player) to).getName());
-					if(message.contains("{DISPLAY_NAME}"))
-						message = message.replace("{DISPLAY_NAME}", ((Player) to).getDisplayName());
-					if(message.contains("{WORLD}"))
-						message = message.replace("{WORLD}", 		((Player) to).getWorld().getName());
-					if(message.contains("{BIOME}"))
-						message = message.replace("{BIOME}", 		((Player) to).getLocation().getBlock().getBiome().toString());	
+					if(m.contains("{NAME}"))
+						m = m.replace("{NAME}", 		((Player) to).getName());
+					if(m.contains("{DISPLAY_NAME}"))
+						m = m.replace("{DISPLAY_NAME}", ((Player) to).getDisplayName());
+					if(m.contains("{WORLD}"))
+						m = m.replace("{WORLD}", 		((Player) to).getWorld().getName());
+					if(m.contains("{BIOME}"))
+						m = m.replace("{BIOME}", 		((Player) to).getLocation().getBlock().getBiome().toString());	
 				} else if(to instanceof ConsoleCommandSender) {
-					if(message.contains("{NAME}"))
-						message = message.replace("{NAME}", 		to.getName());
-					if(message.contains("{DISPLAY_NAME}"))
-						message = message.replace("{DISPLAY_NAME}", to.getName());
-					if(message.contains("{WORLD}"))
-						message = message.replace("{WORLD}", 		"UNKNOWN");
-					if(message.contains("{BIOME}"))
-						message = message.replace("{BIOME}", 		"UNKNOWN");						
+					if(m.contains("{NAME}"))
+						m = m.replace("{NAME}", 		to.getName());
+					if(m.contains("{DISPLAY_NAME}"))
+						m = m.replace("{DISPLAY_NAME}", to.getName());
+					if(m.contains("{WORLD}"))
+						m = m.replace("{WORLD}", 		"UNKNOWN");
+					if(m.contains("{BIOME}"))
+						m = m.replace("{BIOME}", 		"UNKNOWN");						
 				}
 				
-				if(message.contains("{ONLINE}"))
-					message = message.replace("{ONLINE}", 		Bukkit.getServer().getOnlinePlayers().length + "");
-				if(message.contains("{MAX_ONLINE}"))
-					message = message.replace("{MAX_ONLINE}", 	Bukkit.getServer().getMaxPlayers() + "");
-				if(message.contains("{UNIQUE_PLAYERS}"))
-					message = message.replace("{UNIQUE_PLAYERS}", Bukkit.getServer().getOfflinePlayers().length + "");
+				if(m.contains("{ONLINE}"))
+					m = m.replace("{ONLINE}", 		Bukkit.getServer().getOnlinePlayers().length + "");
+				if(m.contains("{MAX_ONLINE}"))
+					m = m.replace("{MAX_ONLINE}", 	Bukkit.getServer().getMaxPlayers() + "");
+				if(m.contains("{UNIQUE_PLAYERS}"))
+					m = m.replace("{UNIQUE_PLAYERS}", Bukkit.getServer().getOfflinePlayers().length + "");
 				
-				if(message.contains("{YEAR}"))
-					message = message.replace("{YEAR}", Calendar.getInstance().get(Calendar.YEAR) + "");
-				if(message.contains("{MONTH}"))
-					message = message.replace("{MONTH}", Calendar.getInstance().get(Calendar.MONTH) + "");
-				if(message.contains("{WEEK_OF_MONTH}"))
-					message = message.replace("{WEEK_OF_MONTH}", Calendar.getInstance().get(Calendar.WEEK_OF_MONTH) + "");
-				if(message.contains("{WEEK_OF_YEAR}"))
-					message = message.replace("{WEEK_OF_YEAR}", Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) + "");
-				if(message.contains("{DAY_OF_WEEK}"))
-					message = message.replace("{DAY_OF_WEEK}", Calendar.getInstance().get(Calendar.DAY_OF_WEEK) + "");
-				if(message.contains("{DAY_OF_MONTH}"))
-					message = message.replace("{DAY_OF_MONTH}", Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "");
-				if(message.contains("{DAY_OF_YEAR}"))
-					message = message.replace("{DAY_OF_YEAR}", Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + "");
-				if(message.contains("{HOUR}"))
-					message = message.replace("{HOUR}", Calendar.getInstance().get(Calendar.HOUR) + "");
-				if(message.contains("{HOUR_OF_DAY}"))
-					message = message.replace("{HOUR_OF_DAY}", Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + "");
-				if(message.contains("{MINUTE}"))
-					message = message.replace("{MINUTE}", Calendar.getInstance().get(Calendar.MINUTE) + "");
-				if(message.contains("{SECOND}"))
-					message = message.replace("{SECOND}", Calendar.getInstance().get(Calendar.SECOND) + "");
+				if(m.contains("{YEAR}"))
+					m = m.replace("{YEAR}", Calendar.getInstance().get(Calendar.YEAR) + "");
+				if(m.contains("{MONTH}"))
+					m = m.replace("{MONTH}", Calendar.getInstance().get(Calendar.MONTH) + "");
+				if(m.contains("{WEEK_OF_MONTH}"))
+					m = m.replace("{WEEK_OF_MONTH}", Calendar.getInstance().get(Calendar.WEEK_OF_MONTH) + "");
+				if(m.contains("{WEEK_OF_YEAR}"))
+					m = m.replace("{WEEK_OF_YEAR}", Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) + "");
+				if(m.contains("{DAY_OF_WEEK}"))
+					m = m.replace("{DAY_OF_WEEK}", Calendar.getInstance().get(Calendar.DAY_OF_WEEK) + "");
+				if(m.contains("{DAY_OF_MONTH}"))
+					m = m.replace("{DAY_OF_MONTH}", Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "");
+				if(m.contains("{DAY_OF_YEAR}"))
+					m = m.replace("{DAY_OF_YEAR}", Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + "");
+				if(m.contains("{HOUR}"))
+					m = m.replace("{HOUR}", Calendar.getInstance().get(Calendar.HOUR) + "");
+				if(m.contains("{HOUR_OF_DAY}"))
+					m = m.replace("{HOUR_OF_DAY}", Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + "");
+				if(m.contains("{MINUTE}"))
+					m = m.replace("{MINUTE}", Calendar.getInstance().get(Calendar.MINUTE) + "");
+				if(m.contains("{SECOND}"))
+					m = m.replace("{SECOND}", Calendar.getInstance().get(Calendar.SECOND) + "");
 				
-				to.sendMessage(ChatColor.translateAlternateColorCodes("&".charAt(0), message));
+				to.sendMessage(ChatColor.translateAlternateColorCodes("&".charAt(0), m));
 			}
 			
 			for(String command : commands) {

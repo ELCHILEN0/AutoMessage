@@ -20,6 +20,11 @@ import com.TeamNovus.AutoMessage.Util.Updater.UpdateType;
 
 public class PluginCommands {
 
+	@BaseCommand(aliases = "test", permission = Permission.NONE, desc = "")
+	public void testCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		sender.sendMessage(String.format("This is a %5s test!", "test"));
+	}
+	
 	@BaseCommand(aliases = "reload", desc = "Reload the configuration from the disk.", usage = "", permission = Permission.COMMAND_RELOAD)
 	public void onReloadCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		AutoMessage.getPlugin().loadConfig();
@@ -322,4 +327,5 @@ public class PluginCommands {
 			}
 		}
 	}
+
 }

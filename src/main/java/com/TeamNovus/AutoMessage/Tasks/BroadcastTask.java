@@ -3,7 +3,6 @@ package com.TeamNovus.AutoMessage.Tasks;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.TeamNovus.AutoMessage.AutoMessage;

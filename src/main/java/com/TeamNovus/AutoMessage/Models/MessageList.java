@@ -24,10 +24,14 @@ public class MessageList {
 	private transient int currentIndex = 0;
 	
 	public MessageList() {
+<<<<<<< HEAD
 	    messages.add(new Message("First message in the list!"));
 	    messages.add(new Message("&aSecond message in the list with formatters!"));
 	    messages.add(new Message("&bThird message in the list with formatters and a \nnew line!"));
 	    messages.add(new Message("&cFourth message in the list with %8s formatters and a \nnew line!", "advanced"));
+=======
+	    messages.add("This is a &amessage&r in a &amessage-list&r!");
+>>>>>>> 2df7346d94aa70cd6fcf22505ef6a5c45e9d793e
 	}
 	
 	public boolean isEnabled() {
@@ -223,11 +227,9 @@ public class MessageList {
 				to.sendMessage(ChatColor.translateAlternateColorCodes("&".charAt(0), message));
 			}
 			
-			for(String command : commands) {
-				if(to instanceof ConsoleCommandSender) {
+			for(String command : commands)
+				if(to instanceof ConsoleCommandSender)
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-				}
-			}
 		}
 	}
 }

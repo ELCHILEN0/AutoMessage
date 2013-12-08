@@ -7,15 +7,15 @@ import java.util.LinkedList;
 import org.bukkit.ChatColor;
 
 public class CommandManager {
-	private static ChatColor light = ChatColor.GREEN;
-	private static ChatColor dark = ChatColor.DARK_GREEN;
-	private static ChatColor neutral = ChatColor.WHITE;
-	private static ChatColor highlight = ChatColor.AQUA;
-	private static ChatColor extra = ChatColor.DARK_RED;
-	private static ChatColor error = ChatColor.RED;
-	private static ChatColor warning = ChatColor.YELLOW;
+	private static final ChatColor light = ChatColor.GREEN;
+	private static final ChatColor dark = ChatColor.DARK_GREEN;
+	private static final ChatColor neutral = ChatColor.WHITE;
+	private static final ChatColor highlight = ChatColor.AQUA;
+	private static final ChatColor extra = ChatColor.DARK_RED;
+	private static final ChatColor error = ChatColor.RED;
+	private static final ChatColor warning = ChatColor.YELLOW;
 	
-	private static LinkedHashMap<BaseCommand, Method> commands = new LinkedHashMap<BaseCommand, Method>();
+	private static final LinkedHashMap<BaseCommand, Method> commands = new LinkedHashMap<BaseCommand, Method>();
 	
 	public static ChatColor getLight() {
 		return light;
@@ -77,14 +77,10 @@ public class CommandManager {
 	}
 	
 	public static BaseCommand getCommand(String label) {
-		for (BaseCommand command : commands.keySet()) {
-			for (String alias : command.aliases()) {
-				if(label.equalsIgnoreCase(alias)) {
+		for(BaseCommand command : commands.keySet())
+			for(String alias : command.aliases())
+				if(label.equalsIgnoreCase(alias))
 					return command;
-				}
-			}
-		}
-		
 		return null;
 	}
 	

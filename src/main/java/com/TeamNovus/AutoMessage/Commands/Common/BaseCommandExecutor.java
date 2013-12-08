@@ -13,9 +13,11 @@ import org.bukkit.entity.Player;
 
 import com.TeamNovus.AutoMessage.AutoMessage;
 import com.TeamNovus.AutoMessage.Permission;
+import java.util.Arrays;
 
 public class BaseCommandExecutor implements CommandExecutor, TabCompleter {
 	
+	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		if(args.length == 0) {
 			sender.sendMessage(CommandManager.getExtra() + "__________________.[ " + CommandManager.getHighlight() + AutoMessage.getPlugin().getName() + CommandManager.getExtra() + " ].__________________");
@@ -27,12 +29,12 @@ public class BaseCommandExecutor implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		
-		if(CommandManager.getCommand(args[0]) == null) {
+		BaseCommand command = CommandManager.getCommand(args[0]);
+		if(command == null) {
 			sender.sendMessage(CommandManager.getError() + "The specified command was not found!");
 			return true;
 		}
 		
-		BaseCommand command = CommandManager.getCommand(args[0]);
 		Object[] commandArgs = ArrayUtils.remove(args, 0);
 		
 		if(sender instanceof Player && !(command.player())) {
@@ -45,7 +47,11 @@ public class BaseCommandExecutor implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		
-		if(command.permission() != null && !(command.permission().equals(Permission.NONE)) && !(Permission.has(command.permission(), sender))) {
+		boolean hasPermission = command.permission().isMulti()
+			? ((commandArgs.length > 0) ? Permission.has(command.permission(), sender, (String)commandArgs[0]) : false)
+			: Permission.has(command.permission(), sender);
+		
+		if(command.permission() != null && !(command.permission().equals(Permission.NONE)) && !hasPermission) {
 			sender.sendMessage(CommandManager.getError() + "You do not have permission for this command!");
 			return true;
 		}
@@ -59,13 +65,12 @@ public class BaseCommandExecutor implements CommandExecutor, TabCompleter {
 		return true;
 	}
 	
+	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String commandLabel, String[] args) {	
 		ArrayList<String> list = new ArrayList<String>();
 		
 		for(BaseCommand command : CommandManager.getCommands()) {
-			for(String alias : command.aliases()) {
-				list.add(alias);
-			}
+			list.addAll(Arrays.asList(command.aliases()));
 		}
 		
 		return list;		

@@ -87,31 +87,49 @@ public class AutoMessage extends JavaPlugin {
 
 				if(getConfig().contains("message-lists." + key + ".suffix"))
 					list.setSuffix(getConfig().getString("message-lists." + key + ".suffix"));
-				
+								
 				LinkedList<Message> finalMessages = new LinkedList<Message>();
+			
 				if(getConfig().contains("message-lists." + key + ".messages")) {
-					@SuppressWarnings("unchecked")
-					List<Map<String, List<String>>> messages = (List<Map<String, List<String>>>) ((Object) getConfig().getMapList("message-lists." + key + ".messages"));
-
-					for(Map<String, List<String>> message : messages) {
-						for(Entry<String, List<String>> entry : message.entrySet()) {
-							Message m = new Message(entry.getKey());
-														
-							for(String s : entry.getValue()) {
-								m.addArgument(s);
-							}
+					if(getConfig().getList("message-lists." + key + ".messages") instanceof List) {
+						List<?> tmp = getConfig().getList("message-lists." + key + ".messages");
 							
-							finalMessages.add(m);
+						// Decide what format the list is in...
+						if(tmp.get(0) instanceof String) {
+							@SuppressWarnings("unchecked")
+							List<String> messages = (List<String>) getConfig().getList("message-lists." + key + ".messages");
+
+							for (String m : messages) {
+								finalMessages.add(new Message(m));
+							}		
+						} else {
+							@SuppressWarnings("unchecked")
+							List<Map<String, List<String>>> messages = (List<Map<String, List<String>>>) ((Object) getConfig().getMapList("message-lists." + key + ".messages"));
+
+							for(Map<String, List<String>> message : messages) {
+								for(Entry<String, List<String>> entry : message.entrySet()) {
+									Message m = new Message(entry.getKey());
+																
+									for(String s : entry.getValue()) {
+										m.addArgument(s);
+									}
+									
+									finalMessages.add(m);
+								}
+							}
 						}
-					}
+					}					
 				}
+				
 				list.setMessages(finalMessages);
 				
-
 				MessageLists.setList(key, list);
 			}
 			
 			MessageLists.schedule();
+			
+			// Will the conversions to the disk.
+			saveConfiguration();
 	}
 	
 	public void saveConfiguration() {

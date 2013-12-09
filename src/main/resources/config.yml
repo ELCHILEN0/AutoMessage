@@ -4,7 +4,7 @@
 #  Message Configuration:
 #     Messages are handled in lists to allow for advanced customization!
 #     Feel free to add color codes by using & in your messages!
-#     To split a message onto multiple lines use the \n delimiter!
+#     To split a message onto multiple lines use the %n delimiter!
 #     Lines starting with / will be run as a command!
 #     To add single apostrophes into a message use ''.
 #     For a complete tutorial go to http://dev.bukkit.org/server-mods/automessage.
@@ -15,7 +15,7 @@ settings:
   min-players: 0
   log-to-console: false
 message-lists:
-  default:
+  regular:
     enabled: true
     random: false
     interval: 45
@@ -23,18 +23,19 @@ message-lists:
     prefix: '[&bPrefix&r] '
     suffix: ' [&4Suffix&r]'
     messages:
-    - '&1First&r message \nin the default list!'
-    - '&2Second&r message \nin the default list!'
-    - '&3Third&r message \nin the default list!'
-    - 'These messages will be displayed to users with \nautomessage.receive.default!'
-  vip:
+    - '&1First&r message %nin the default list!': []
+    - '&2Second&r message %nin the default list!': []
+    - '&3Third&r message %nin the default list!': []
+    - 'These messages will be displayed to users with %nautomessage.receive.default!': []
+  formatted:
     enabled: true
     random: false
     interval: 45
     expiry: -1
-    prefix: '[&bPrefix&r]\n'
-    suffix: '\n[&4Suffix&r] '
+    prefix: ''
+    suffix: ''
     messages:
-    - 'Message Format':
-      - 'First Formatter'
-      - 'Second Formatter'
+    - '%6s %9s %10s':
+      - 'Custom'
+      - 'formatted'
+      - '&2message!'

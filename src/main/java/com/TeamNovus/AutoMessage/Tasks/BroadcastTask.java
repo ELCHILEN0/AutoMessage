@@ -25,8 +25,8 @@ public class BroadcastTask implements Runnable {
 				if(Bukkit.getServer().getOnlinePlayers().length >= AutoMessage.getPlugin().getConfig().getInt("settings.min-players")) {
 					int index = list.isRandom() ? new Random().nextInt(list.getMessages().size()) : list.getCurrentIndex();
 
-					for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-						if(p.hasPermission("automessage.receive." + name)) {
+					for(Player p : Bukkit.getServer().getOnlinePlayers()) {					    
+						if(p.hasPermission("automessage.receive." + name) && !list.getIgnoreworlds().contains(p.getWorld().getName())) {
 							list.broadcastTo(index, p);
 						}
 					}

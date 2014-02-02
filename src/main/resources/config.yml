@@ -27,6 +27,8 @@ message-lists:
     - '&2Second&r message %nin the default list!': []
     - '&3Third&r message %nin the default list!': []
     - 'These messages will be displayed to users with %nautomessage.receive.default!': []
+    ignoreworlds:
+    - testworld
   formatted:
     enabled: true
     random: false
@@ -39,3 +41,5 @@ message-lists:
       - 'Custom'
       - 'formatted'
       - '&2message!'
+    ignoreworlds:
+    - testworld

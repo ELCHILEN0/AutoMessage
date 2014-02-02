@@ -18,6 +18,7 @@ public class MessageList {
 	private String prefix = "[&bPrefix&r] ";
 	private String suffix = " [&4Suffix&r]";
 	private List<Message> messages = new ArrayList<Message>();
+	private List<String> ignoreworlds = new ArrayList<String>();
 	
 	private transient int currentIndex = 0;
 	
@@ -225,5 +226,13 @@ public class MessageList {
 				}
 			}
 		}
+	}
+
+	public List<String> getIgnoreworlds() {
+	    return ignoreworlds;
+	}
+
+	public void setIgnoreworlds(List<String> ignoreworlds) {
+	    this.ignoreworlds = ignoreworlds;
 	}
 }

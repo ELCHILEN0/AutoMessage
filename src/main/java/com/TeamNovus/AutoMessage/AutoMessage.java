@@ -87,6 +87,15 @@ public class AutoMessage extends JavaPlugin {
 
 			if(getConfig().contains("message-lists." + key + ".suffix"))
 				list.setSuffix(getConfig().getString("message-lists." + key + ".suffix"));
+			
+			if(getConfig().contains("message-lists." + key + ".ignoreworlds")) {
+			    	List<?> tmp = getConfig().getList("message-lists." + key + ".ignoreworlds");
+			    	if(tmp.get(0) instanceof String) {
+			    	        @SuppressWarnings("unchecked")
+			    	        List<String> ignoreworlds = (List<String>) tmp;
+			    	    	list.setIgnoreworlds(ignoreworlds);
+			    	}
+			}
 
 			LinkedList<Message> finalMessages = new LinkedList<Message>();
 
@@ -154,7 +163,8 @@ public class AutoMessage extends JavaPlugin {
 			getConfig().set("message-lists." + key + ".random", list.isRandom());
 			getConfig().set("message-lists." + key + ".prefix", list.getPrefix());
 			getConfig().set("message-lists." + key + ".suffix", list.getSuffix());
-
+			getConfig().set("message-lists." + key + ".ignoreworlds", list.getIgnoreworlds());
+			
 			List<HashMap<String, List<String>>> messages = new LinkedList<HashMap<String,List<String>>>();
 			for(Message m : list.getMessages()) {
 				HashMap<String, List<String>> ms = new HashMap<String, List<String>>();

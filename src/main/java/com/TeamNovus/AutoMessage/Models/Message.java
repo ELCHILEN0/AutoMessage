@@ -1,67 +1,63 @@
 package com.TeamNovus.AutoMessage.Models;
 
 import java.util.LinkedList;
-import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import net.minecraft.server.v1_7_R1.ChatSerializer;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class Message {
-	private String format;
-	private LinkedList<String> arguments = new LinkedList<String>();
+	private String raw;
 
-	public Message(String format, String... arguments) {
-		this.format = format;
-		for(String arg : arguments) {
-			this.arguments.add(arg);
-		}
+	public Message(String raw) {
+		this.raw = raw;
 	}
 	
-	public String getFormattedMessage() {
-		return String.format(format, arguments.toArray());
+	public String getMessage() {
+		return raw;
 	}
 	
-	public String getFormat() {
-		return format;
-	}
-	
-	public List<String> getArguments() {
-		return arguments;
-	}
-	
-	public void addArgument(String argument, int index) {
-		try {
-			arguments.add(index, argument);
-		} catch (IndexOutOfBoundsException e) {
-			arguments.add(argument);
-		}
-	}
-	
-	public void addArgument(String argument) {
-		arguments.add(argument);
-	}
-	
-	public LinkedList<String> getCommands() {
-		LinkedList<String> commands = new LinkedList<String>();
+	public Message setMessage(String raw) {
+		this.raw = raw;
 		
-		for (String line : StringUtils.split(getFormattedMessage(), "\\\n")) {
-			if(line.startsWith("/")) {
-				commands.add(line.replaceFirst("/", ""));
-			}
-		}
-		
-		return commands;
+		return this;
 	}
+	
+	public boolean isJsonMessage(int index) {
+	    try {
+	    	ChatSerializer.a(getMessages().get(index));
+//	    	new JSONParser().parse(getMessages().get(index));
 
+	    	return true;
+	    } catch(Exception e) { 
+	        return false;
+	    }
+
+	}
+	
 	public LinkedList<String> getMessages() {
 		LinkedList<String> messages = new LinkedList<String>();
-
-		for (String line : StringUtils.split(getFormattedMessage(), "\\\n")) {
+		
+		for (String line : raw.split("\\\\n")) {
 			if(!(line.startsWith("/"))) {
 				messages.add(line);
 			}
 		}
 		
 		return messages;
+	}
+	
+	public LinkedList<String> getCommands() {
+		LinkedList<String> commands = new LinkedList<String>();
+		
+		for (String line : raw.split("\\\\n")) {
+			if(line.startsWith("/")) {
+				commands.add(line);
+			}
+		}
+		
+		return commands;
 	}
 	
 }

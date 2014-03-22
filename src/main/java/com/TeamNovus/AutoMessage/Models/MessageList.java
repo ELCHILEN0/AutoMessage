@@ -1,13 +1,17 @@
 package com.TeamNovus.AutoMessage.Models;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
+
+import net.minecraft.server.v1_7_R1.ChatSerializer;
+import net.minecraft.server.v1_7_R1.PacketPlayOutChat;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.craftbukkit.v1_7_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class MessageList {
@@ -15,9 +19,7 @@ public class MessageList {
 	private int interval = 45;
 	private long expiry = -1L;
 	private boolean random = false;
-	private String prefix = "[&bPrefix&r] ";
-	private String suffix = " [&4Suffix&r]";
-	private List<Message> messages = new ArrayList<Message>();
+	private List<Message> messages = new LinkedList<Message>();
 	
 	private transient int currentIndex = 0;
 	
@@ -25,7 +27,6 @@ public class MessageList {
 	    messages.add(new Message("First message in the list!"));
 	    messages.add(new Message("&aSecond message in the list with formatters!"));
 	    messages.add(new Message("&bThird message in the list with formatters and a \nnew line!"));
-	    messages.add(new Message("&cFourth message in the list with %8s formatters and a \nnew line!", "advanced"));
 	}
 	
 	public boolean isEnabled() {
@@ -62,22 +63,6 @@ public class MessageList {
 
 	public void setRandom(boolean random) {
 		this.random = random;
-	}
-
-	public String getPrefix() {
-		return prefix;
-	}
-
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
-	
-	public String getSuffix() {
-		return suffix;
-	}
-	
-	public void setSuffix(String suffix) {
-		this.suffix = suffix;
 	}
 
 	public List<Message> getMessages() {
@@ -158,14 +143,6 @@ public class MessageList {
 			for (int i = 0; i < messages.size(); i++) {
 				String m = messages.get(i);
 				
-				if(i == 0) {
-					m = getPrefix() + m;
-				}
-				
-				if(i == messages.size() - 1) {
-					m = m + getSuffix();
-				}
-				
 				if(to instanceof Player) {
 					if(m.contains("{NAME}"))
 						m = m.replace("{NAME}", 		((Player) to).getName());
@@ -216,13 +193,15 @@ public class MessageList {
 				if(m.contains("{SECOND}"))
 					m = m.replace("{SECOND}", Calendar.getInstance().get(Calendar.SECOND) + "");
 				
-				to.sendMessage(ChatColor.translateAlternateColorCodes("&".charAt(0), m));
+				if(message.isJsonMessage(i) && to instanceof Player) {
+					((CraftPlayer) to).getHandle().playerConnection.sendPacket(new PacketPlayOutChat(ChatSerializer.a(ChatColor.translateAlternateColorCodes("&".charAt(0), m))));
+				} else {
+					to.sendMessage(ChatColor.translateAlternateColorCodes("&".charAt(0), m));
+				}
 			}
 			
 			for(String command : commands) {
-				if(to instanceof ConsoleCommandSender) {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-				}
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replaceFirst("/", ""));
 			}
 		}
 	}

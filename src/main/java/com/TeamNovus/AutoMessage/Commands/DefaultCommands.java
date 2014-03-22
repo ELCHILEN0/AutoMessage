@@ -8,7 +8,7 @@ import com.TeamNovus.AutoMessage.Permission;
 import com.TeamNovus.AutoMessage.AutoMessage;
 import com.TeamNovus.AutoMessage.Commands.Common.BaseCommand;
 import com.TeamNovus.AutoMessage.Commands.Common.CommandManager;
-import com.TeamNovus.AutoMessage.Util.StringUtil;
+import com.TeamNovus.AutoMessage.Util.Utils;
 
 public class DefaultCommands {
 
@@ -18,7 +18,7 @@ public class DefaultCommands {
 		int maxLines = 6;
 		
 		if(args.length != 0) {
-			if(!(StringUtil.isInteger(args[0])) || Math.abs(Integer.valueOf(args[0])) * maxLines - maxLines >= CommandManager.getCommands().size()) {
+			if(!(Utils.isInteger(args[0])) || Math.abs(Integer.valueOf(args[0])) * maxLines - maxLines >= CommandManager.getCommands().size()) {
 				sender.sendMessage(ChatColor.RED + "The specified page was not found.");
 				return;
 			}

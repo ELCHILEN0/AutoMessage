@@ -13,18 +13,13 @@ import com.TeamNovus.AutoMessage.Commands.Common.BaseCommand;
 import com.TeamNovus.AutoMessage.Models.Message;
 import com.TeamNovus.AutoMessage.Models.MessageList;
 import com.TeamNovus.AutoMessage.Models.MessageLists;
-import com.TeamNovus.AutoMessage.Util.StringUtil;
+import com.TeamNovus.AutoMessage.Util.Utils;
 import com.TeamNovus.AutoMessage.Util.Updater;
 import com.TeamNovus.AutoMessage.Util.Updater.UpdateResult;
 import com.TeamNovus.AutoMessage.Util.Updater.UpdateType;
 
 public class PluginCommands {
 
-	@BaseCommand(aliases = "test", permission = Permission.NONE, desc = "")
-	public void testCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		sender.sendMessage(String.format("This is a %5s test!", "test"));
-	}
-	
 	@BaseCommand(aliases = "reload", desc = "Reload the configuration from the disk.", usage = "", permission = Permission.COMMAND_RELOAD)
 	public void onReloadCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		AutoMessage.getPlugin().loadConfig();
@@ -34,16 +29,16 @@ public class PluginCommands {
 	
 	@BaseCommand(aliases = "update", desc = "Update to the latest version.", usage = "", permission = Permission.COMMAND_UPDATE)
 	public void onUpdateCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		Updater updater = new Updater(AutoMessage.getPlugin(), "automessage", AutoMessage.getPlugin().getFile(), UpdateType.NO_DOWNLOAD, false);
+		Updater updater = new Updater(AutoMessage.getPlugin(), 37718, AutoMessage.getPlugin().getFile(), UpdateType.NO_DOWNLOAD, false);
 		
 		if(updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
 			sender.sendMessage(ChatColor.GREEN + "There is an update available! Downloading update...");
 			
-			UpdateResult result = new Updater(AutoMessage.getPlugin(), "automessage", AutoMessage.getPlugin().getFile(), UpdateType.NO_VERSION_CHECK, true).getResult();
+			UpdateResult result = new Updater(AutoMessage.getPlugin(), 37718, AutoMessage.getPlugin().getFile(), UpdateType.DEFAULT, true).getResult();
 			if(result == UpdateResult.SUCCESS) {
-				sender.sendMessage(ChatColor.RESET + updater.getLatestVersionString() + ChatColor.GREEN + " has been downloaded sucessfully!");
+				sender.sendMessage(ChatColor.RESET + updater.getLatestName() + ChatColor.GREEN + " has been downloaded sucessfully!");
 			} else  {
-				sender.sendMessage(ChatColor.RED + "There was an error downloading " + ChatColor.RESET + updater.getLatestVersionString() + ChatColor.RED + "!");
+				sender.sendMessage(ChatColor.RED + "There was an error downloading " + ChatColor.RESET + updater.getLatestName() + ChatColor.RED + "!");
 			}
 		} else {
 			PluginDescriptionFile desc = AutoMessage.getPlugin().getDescription();
@@ -69,12 +64,12 @@ public class PluginCommands {
 
 			if(list != null) {
 				if(args.length >= 2) {
-					if(args.length >= 3 && StringUtil.isInteger(args[1]) ) {
-						Message message = new Message(StringUtil.concat(args, 2, args.length));
+					if(args.length >= 3 && Utils.isInteger(args[1]) ) {
+						Message message = new Message(Utils.concat(args, 2, args.length));
 						
 						list.addMessage(Integer.valueOf(args[1]), message);
 					} else {
-						Message message = new Message(StringUtil.concat(args, 1, args.length));
+						Message message = new Message(Utils.concat(args, 1, args.length));
 
 						list.addMessage(message);
 					}
@@ -96,8 +91,8 @@ public class PluginCommands {
 		MessageList list = MessageLists.getBestList(args[0]);
 
 		if(list != null) {
-			if(StringUtil.isInteger(args[1])) {
-				Message message = new Message(StringUtil.concat(args, 2, args.length));
+			if(Utils.isInteger(args[1])) {
+				Message message = new Message(Utils.concat(args, 2, args.length));
 				
 				if(list.editMessage(Integer.valueOf(args[1]), message)) {
 					AutoMessage.getPlugin().saveConfiguration();
@@ -130,7 +125,7 @@ public class PluginCommands {
 			MessageList list = MessageLists.getBestList(args[0]);
 
 			if(list != null) {
-				if(StringUtil.isInteger(args[1])) {
+				if(Utils.isInteger(args[1])) {
 					if(list.removeMessage(Integer.valueOf(args[1]))) {
 						MessageLists.schedule();
 						AutoMessage.getPlugin().saveConfiguration();
@@ -168,7 +163,7 @@ public class PluginCommands {
 		MessageList list = MessageLists.getBestList(args[0]);
 
 		if(list != null) {
-			if(StringUtil.isInteger(args[1])) {
+			if(Utils.isInteger(args[1])) {
 				list.setInterval(Integer.valueOf(args[1]));
 				
 				MessageLists.schedule();
@@ -189,20 +184,20 @@ public class PluginCommands {
 
 		if(list != null) {
 			try {
-				if(StringUtil.isInteger(args[1])) {
+				if(Utils.isInteger(args[1])) {
 					if(Integer.valueOf(args[1]).longValue() >= 0) {
 						list.setExpiry(System.currentTimeMillis() + Integer.valueOf(args[1]).longValue());
 					} else {
 						list.setExpiry(Integer.valueOf(-1).longValue());
 					}
 				} else {
-					list.setExpiry(System.currentTimeMillis() + StringUtil.parseTime(args[1]));
+					list.setExpiry(System.currentTimeMillis() + Utils.parseTime(args[1]));
 				}
 
 				AutoMessage.getPlugin().saveConfiguration();
 				
 				if(list.getExpiry() != -1) {
-					sender.sendMessage(ChatColor.GREEN + "Expires in " + ChatColor.YELLOW + StringUtil.millisToLongDHMS(list.getExpiry() - System.currentTimeMillis()) + ChatColor.GREEN + "!");
+					sender.sendMessage(ChatColor.GREEN + "Expires in " + ChatColor.YELLOW + Utils.millisToLongDHMS(list.getExpiry() - System.currentTimeMillis()) + ChatColor.GREEN + "!");
 				} else {
 					sender.sendMessage(ChatColor.GREEN + "Expiry disabled!");
 				}
@@ -229,58 +224,12 @@ public class PluginCommands {
 		}
 	}
 
-	@BaseCommand(aliases = "prefix", desc = "Set a lists prefix for broadcasts.", usage = "<List> [Prefix]", min = 1, permission = Permission.COMMAND_PREFIX)
-	public void onPrefixCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		MessageList list = MessageLists.getBestList(args[0]);
-
-		if(list != null) {
-			if(args.length == 1) {
-				list.setPrefix("");
-				
-				AutoMessage.getPlugin().saveConfiguration();
-				
-				sender.sendMessage(ChatColor.GREEN + "Prefix updated!");
-			} else {
-				list.setPrefix(StringUtil.concat(args, 1, args.length) + " ");
-
-				AutoMessage.getPlugin().saveConfiguration();
-				
-				sender.sendMessage(ChatColor.GREEN + "Prefix updated!");
-			}
-		} else {
-			sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
-		}
-	}
-
-	@BaseCommand(aliases = "suffix", desc = "Set a lists suffix for broadcasts.", usage = "<List> [Suffix]", min = 1, permission = Permission.COMMAND_SUFFIX)
-	public void onSuffixCmd(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		MessageList list = MessageLists.getBestList(args[0]);
-
-		if(list != null) {
-			if(args.length == 1) {
-				list.setSuffix("");
-
-				AutoMessage.getPlugin().saveConfiguration();
-				
-				sender.sendMessage(ChatColor.GREEN + "Suffix updated!");
-			} else {
-				list.setSuffix(" " + StringUtil.concat(args, 1, args.length));
-
-				AutoMessage.getPlugin().saveConfiguration();
-				
-				sender.sendMessage(ChatColor.GREEN + "Suffix updated!");
-			}
-		} else {
-			sender.sendMessage(ChatColor.RED + "The specified list does not exist!");
-		}
-	}
-
 	@BaseCommand(aliases = "broadcast", desc = "Broadcast a message from a list.", usage = "<List> <Index>", min = 2, max = 2, permission = Permission.COMMAND_BROADCAST)
 	public void onBroadcast(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		MessageList list = MessageLists.getBestList(args[0]);
 
 		if(list != null) {
-			if(StringUtil.isInteger(args[1])) {
+			if(Utils.isInteger(args[1])) {
 				int index = Integer.valueOf(args[1]);
 
 				if(list.getMessage(index) != null) {
@@ -316,11 +265,7 @@ public class PluginCommands {
 				
 				List<Message> messages = list.getMessages();
 				for (int i = 0; i < messages.size(); i++) {
-					sender.sendMessage(ChatColor.YELLOW + "" + i + ": " + ChatColor.RESET + ChatColor.translateAlternateColorCodes("&".charAt(0), list.getPrefix() + messages.get(i).getFormat() + list.getSuffix()));
-					
-					for(int j = 0; j < messages.get(i).getArguments().size(); j++) {
-						sender.sendMessage(" Argument #" + j + ":" + messages.get(i).getArguments().get(j));
-					}
+					sender.sendMessage(ChatColor.YELLOW + "" + i + ": " + ChatColor.RESET + ChatColor.translateAlternateColorCodes("&".charAt(0), messages.get(i).getMessage()));
 				}
 			} else {
 				sender.sendMessage(ChatColor.RED + "The specified list does not exist!");

@@ -4,16 +4,10 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.minecraft.server.v1_7_R3.ChatSerializer;
-import net.minecraft.server.v1_7_R3.EntityPlayer;
-import net.minecraft.server.v1_7_R3.PacketPlayOutChat;
-import net.minecraft.server.v1_7_R3.PlayerConnection;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class MessageList {

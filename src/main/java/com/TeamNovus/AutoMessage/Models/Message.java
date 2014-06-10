@@ -2,10 +2,7 @@ package com.TeamNovus.AutoMessage.Models;
 
 import java.util.LinkedList;
 
-import net.minecraft.server.v1_7_R1.ChatSerializer;
-
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import org.bukkit.Bukkit;
 
 public class Message {
 	private String raw;
@@ -26,8 +23,8 @@ public class Message {
 	
 	public boolean isJsonMessage(int index) {
 	    try {
-	    	ChatSerializer.a(getMessages().get(index));
-//	    	new JSONParser().parse(getMessages().get(index));
+	    	String v = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+	    	Class.forName("net.minecraft.server." + v + ".ChatSerializer").getMethod("a", String.class).invoke(null, getMessages().get(index));
 
 	    	return true;
 	    } catch(Exception e) { 

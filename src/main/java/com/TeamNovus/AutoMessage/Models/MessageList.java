@@ -4,14 +4,16 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.minecraft.server.v1_7_R1.ChatSerializer;
-import net.minecraft.server.v1_7_R1.PacketPlayOutChat;
+import net.minecraft.server.v1_7_R3.ChatSerializer;
+import net.minecraft.server.v1_7_R3.EntityPlayer;
+import net.minecraft.server.v1_7_R3.PacketPlayOutChat;
+import net.minecraft.server.v1_7_R3.PlayerConnection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_7_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class MessageList {
@@ -194,7 +196,21 @@ public class MessageList {
 					m = m.replace("{SECOND}", Calendar.getInstance().get(Calendar.SECOND) + "");
 				
 				if(message.isJsonMessage(i) && to instanceof Player) {
-					((CraftPlayer) to).getHandle().playerConnection.sendPacket(new PacketPlayOutChat(ChatSerializer.a(ChatColor.translateAlternateColorCodes("&".charAt(0), m))));
+			    	String v = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+					
+			    	try {
+			    		// Parse the message
+						Object parsedMessage = Class.forName("net.minecraft.server." + v + ".ChatSerializer").getMethod("a", String.class).invoke(null, ChatColor.translateAlternateColorCodes("&".charAt(0), m));
+						Object packetPlayOutChat = Class.forName("net.minecraft.server." + v + ".PacketPlayOutChat").getConstructor(Class.forName("net.minecraft.server." + v + ".IChatBaseComponent")).newInstance(parsedMessage);
+						
+						// Drill down to the playerConnection which calls the sendPacket method
+						Object craftPlayer = Class.forName("org.bukkit.craftbukkit." + v + ".entity.CraftPlayer").cast(to);
+						Object craftHandle = Class.forName("org.bukkit.craftbukkit." + v + ".entity.CraftPlayer").getMethod("getHandle").invoke(craftPlayer);
+						Object playerConnection = Class.forName("net.minecraft.server." + v + ".EntityPlayer").getField("playerConnection").get(craftHandle);
+						
+						// Send the message packet
+						Class.forName("net.minecraft.server." + v + ".PlayerConnection").getMethod("sendPacket", Class.forName("net.minecraft.server." + v + ".Packet")).invoke(playerConnection, packetPlayOutChat);
+			    	} catch(Exception ignore) {  }
 				} else {
 					to.sendMessage(ChatColor.translateAlternateColorCodes("&".charAt(0), m));
 				}

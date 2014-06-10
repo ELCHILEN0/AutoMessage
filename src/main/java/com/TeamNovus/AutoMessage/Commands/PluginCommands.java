@@ -255,7 +255,7 @@ public class PluginCommands {
 					sender.sendMessage(ChatColor.GOLD + key);
 				}
 			} else {
-				sender.sendMessage(ChatColor.RED + "No lists availiable!");
+				sender.sendMessage(ChatColor.RED + "No lists available!");
 			}
 		} else {
 			MessageList list = MessageLists.getBestList(args[0]);

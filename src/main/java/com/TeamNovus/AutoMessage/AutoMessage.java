@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.TeamNovus.AutoMessage.Util.Metrics;
 import com.TeamNovus.AutoMessage.Commands.DefaultCommands;
 import com.TeamNovus.AutoMessage.Commands.PluginCommands;
 import com.TeamNovus.AutoMessage.Commands.Common.BaseCommandExecutor;
@@ -15,6 +17,7 @@ import com.TeamNovus.AutoMessage.Commands.Common.CommandManager;
 import com.TeamNovus.AutoMessage.Models.Message;
 import com.TeamNovus.AutoMessage.Models.MessageList;
 import com.TeamNovus.AutoMessage.Models.MessageLists;
+import com.TeamNovus.AutoMessage.Util.Metrics;
 
 public class AutoMessage extends JavaPlugin {
 	private static AutoMessage plugin;
@@ -31,36 +34,45 @@ public class AutoMessage extends JavaPlugin {
 		CommandManager.register(PluginCommands.class);
 
 		// Load the configuration.
-		loadConfig();
-
-		// Start metrics.
-		try {
-			Metrics metrics = new Metrics(this);
-
-			metrics.start();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(loadConfig()) {
+			// Start metrics.
+			try {
+				Metrics metrics = new Metrics(this);
+	
+				metrics.start();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@Override
 	public void onDisable() {
-		saveConfiguration();
 		MessageLists.unschedule();
 
 		plugin = null;
 	}
 
-	public void loadConfig() {
+	public boolean loadConfig() {
 		if(!(new File(getDataFolder() + File.separator + "config.yml").exists())) {
 			saveDefaultConfig();
 		}
 
+
 		try {
-			reloadConfig();
+			new YamlConfiguration().load(new File(getDataFolder() + File.separator + "config.yml"));
 		} catch (Exception e) {
+			System.out.println("--- --- --- ---");
+			System.out.println("There was an error loading your configuration.");
+			System.out.println("A detailed description of your error is shown below.");			
+			System.out.println("--- --- --- ---");
 			e.printStackTrace();
+			Bukkit.getPluginManager().disablePlugin(this);
+			
+			return false;
 		}
+		
+		reloadConfig();
 
 		MessageLists.clear();
 
@@ -96,8 +108,10 @@ public class AutoMessage extends JavaPlugin {
 
 		MessageLists.schedule();
 
-		// Will the conversions to the disk.
+		// Saves any version changes to the disk
 		saveConfiguration();
+		
+		return true;
 	}
 
 	public void saveConfiguration() {

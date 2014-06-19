@@ -2,8 +2,11 @@ package com.TeamNovus.AutoMessage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,7 +22,7 @@ import com.TeamNovus.AutoMessage.Models.MessageLists;
 import com.TeamNovus.AutoMessage.Util.Metrics;
 
 public class AutoMessage extends JavaPlugin {
-	private static AutoMessage plugin;
+	public static AutoMessage plugin;
 
 	@Override
 	public void onEnable() {
@@ -93,10 +96,18 @@ public class AutoMessage extends JavaPlugin {
 			LinkedList<Message> finalMessages = new LinkedList<Message>();
 
 			if(getConfig().contains("message-lists." + key + ".messages")) {
-				List<String> messages = getConfig().getStringList("message-lists." + key + ".messages");
+				ArrayList<Object> messages = (ArrayList<Object>) getConfig().getList("message-lists." + key + ".messages");
 				
-				for (String m : messages) {
-					finalMessages.add(new Message(m));
+				for(Object m : messages) {
+					if(m instanceof String) {
+						finalMessages.add(new Message((String) m));
+					} else if(m instanceof Map) {
+						Map<String, List<String>> message = (Map<String, List<String>>) m;
+					
+						for(Entry<String, List<String>> entry : message.entrySet()) {
+							finalMessages.add(new Message(entry.getKey()));
+						}
+					}
 				}
 			}
 
@@ -139,10 +150,6 @@ public class AutoMessage extends JavaPlugin {
 		}
 
 		saveConfig();
-	}
-
-	public static AutoMessage getPlugin() {
-		return plugin;
 	}
 
 	public File getFile() {

@@ -18,11 +18,11 @@ public class BaseCommandExecutor implements CommandExecutor, TabCompleter {
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		if(args.length == 0) {
-			sender.sendMessage(CommandManager.getExtra() + "__________________.[ " + CommandManager.getHighlight() + AutoMessage.getPlugin().getName() + CommandManager.getExtra() + " ].__________________");
-			sender.sendMessage(CommandManager.getDark() + "Description: " + CommandManager.getLight() + AutoMessage.getPlugin().getDescription().getDescription());
-			sender.sendMessage(CommandManager.getDark() + "Author: " + CommandManager.getLight() + AutoMessage.getPlugin().getDescription().getAuthors().get(0));
-			sender.sendMessage(CommandManager.getDark() + "Version: " + CommandManager.getLight() + AutoMessage.getPlugin().getDescription().getVersion());
-			sender.sendMessage(CommandManager.getDark() + "Website: " + CommandManager.getLight() + AutoMessage.getPlugin().getDescription().getWebsite());
+			sender.sendMessage(CommandManager.getExtra() + "__________________.[ " + CommandManager.getHighlight() + AutoMessage.plugin.getName() + CommandManager.getExtra() + " ].__________________");
+			sender.sendMessage(CommandManager.getDark() + "Description: " + CommandManager.getLight() + AutoMessage.plugin.getDescription().getDescription());
+			sender.sendMessage(CommandManager.getDark() + "Author: " + CommandManager.getLight() + AutoMessage.plugin.getDescription().getAuthors().get(0));
+			sender.sendMessage(CommandManager.getDark() + "Version: " + CommandManager.getLight() + AutoMessage.plugin.getDescription().getVersion());
+			sender.sendMessage(CommandManager.getDark() + "Website: " + CommandManager.getLight() + AutoMessage.plugin.getDescription().getWebsite());
 			sender.sendMessage(CommandManager.getExtra() + "---------------------------------------------------");
 			return true;
 		}

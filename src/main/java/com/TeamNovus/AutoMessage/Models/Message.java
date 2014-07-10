@@ -51,9 +51,10 @@ public class Message {
 	
 	public LinkedList<String> getCommands() {
 		LinkedList<String> commands = new LinkedList<String>();
-		
-		for (String line : raw.split("\\\\n")) {
-			if(line.startsWith("/")) {
+
+		for (String line : raw.split(SPLIT_REGEX)) {
+			if (line.startsWith("/")) {
+				line = line.replaceAll(REPLACE_REGEX, REPLACEMENT);
 				commands.add(line);
 			}
 		}

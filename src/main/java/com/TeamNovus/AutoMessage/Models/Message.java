@@ -39,9 +39,10 @@ public class Message {
 	
 	public LinkedList<String> getMessages() {
 		LinkedList<String> messages = new LinkedList<String>();
-		
-		for (String line : raw.split("\\\\n")) {
-			if(!(line.startsWith("/"))) {
+
+		for (String line : raw.split(SPLIT_REGEX)) {
+			if (!(line.startsWith("/"))) {
+				line = line.replaceAll(REPLACE_REGEX, REPLACEMENT);
 				messages.add(line);
 			}
 		}

@@ -11,16 +11,20 @@ import com.TeamNovus.AutoMessage.Permission;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BaseCommand {
 	String[] aliases();
+
 	Permission permission();
-	
+
 	String usage() default "";
+
 	String desc();
-	
+
 	boolean player() default true;
+
 	boolean console() default true;
-	
+
 	int min() default 0;
+
 	int max() default -1;
-	
+
 	boolean hidden() default false;
 }

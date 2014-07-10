@@ -14,29 +14,29 @@ public class Message {
 	public Message(String raw) {
 		this.raw = raw;
 	}
-	
+
 	public String getMessage() {
 		return raw;
 	}
-	
+
 	public Message setMessage(String raw) {
 		this.raw = raw;
-		
+
 		return this;
 	}
-	
-	public boolean isJsonMessage(int index) {
-	    try {
-	    	String v = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-	    	Class.forName("net.minecraft.server." + v + ".ChatSerializer").getMethod("a", String.class).invoke(null, getMessages().get(index));
 
-	    	return true;
-	    } catch(Exception e) { 
-	        return false;
-	    }
+	public boolean isJsonMessage(int index) {
+		try {
+			String v = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+			Class.forName("net.minecraft.server." + v + ".ChatSerializer").getMethod("a", String.class).invoke(null, getMessages().get(index));
+
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 
 	}
-	
+
 	public LinkedList<String> getMessages() {
 		LinkedList<String> messages = new LinkedList<String>();
 
@@ -46,10 +46,10 @@ public class Message {
 				messages.add(line);
 			}
 		}
-		
+
 		return messages;
 	}
-	
+
 	public LinkedList<String> getCommands() {
 		LinkedList<String> commands = new LinkedList<String>();
 
@@ -59,8 +59,8 @@ public class Message {
 				commands.add(line);
 			}
 		}
-		
+
 		return commands;
 	}
-	
+
 }

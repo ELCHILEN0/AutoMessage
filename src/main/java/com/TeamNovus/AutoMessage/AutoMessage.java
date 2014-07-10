@@ -36,11 +36,11 @@ public class AutoMessage extends JavaPlugin {
 		CommandManager.register(PluginCommands.class);
 
 		// Load the configuration.
-		if(loadConfig()) {
+		if (loadConfig()) {
 			// Start metrics.
 			try {
 				Metrics metrics = new Metrics(this);
-	
+
 				metrics.start();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -56,7 +56,7 @@ public class AutoMessage extends JavaPlugin {
 	}
 
 	public boolean loadConfig() {
-		if(!(new File(getDataFolder() + File.separator + "config.yml").exists())) {
+		if (!(new File(getDataFolder() + File.separator + "config.yml").exists())) {
 			saveDefaultConfig();
 		}
 
@@ -66,45 +66,45 @@ public class AutoMessage extends JavaPlugin {
 		} catch (Exception e) {
 			System.out.println("--- --- --- ---");
 			System.out.println("There was an error loading your configuration.");
-			System.out.println("A detailed description of your error is shown below.");			
+			System.out.println("A detailed description of your error is shown below.");
 			System.out.println("--- --- --- ---");
 			e.printStackTrace();
 			Bukkit.getPluginManager().disablePlugin(this);
-			
+
 			return false;
 		}
-		
+
 		reloadConfig();
 
 		MessageLists.clear();
 
-		for(String key : getConfig().getConfigurationSection("message-lists").getKeys(false)) {
+		for (String key : getConfig().getConfigurationSection("message-lists").getKeys(false)) {
 			MessageList list = new MessageList();
 
-			if(getConfig().contains("message-lists." + key + ".enabled"))
+			if (getConfig().contains("message-lists." + key + ".enabled"))
 				list.setEnabled(getConfig().getBoolean("message-lists." + key + ".enabled"));
 
-			if(getConfig().contains("message-lists." + key + ".interval"))
+			if (getConfig().contains("message-lists." + key + ".interval"))
 				list.setInterval(getConfig().getInt("message-lists." + key + ".interval"));
 
-			if(getConfig().contains("message-lists." + key + ".expiry"))
+			if (getConfig().contains("message-lists." + key + ".expiry"))
 				list.setExpiry(getConfig().getLong("message-lists." + key + ".expiry"));
 
-			if(getConfig().contains("message-lists." + key + ".random"))
+			if (getConfig().contains("message-lists." + key + ".random"))
 				list.setRandom(getConfig().getBoolean("message-lists." + key + ".random"));
 
 			LinkedList<Message> finalMessages = new LinkedList<Message>();
 
-			if(getConfig().contains("message-lists." + key + ".messages")) {
+			if (getConfig().contains("message-lists." + key + ".messages")) {
 				ArrayList<Object> messages = (ArrayList<Object>) getConfig().getList("message-lists." + key + ".messages");
-				
-				for(Object m : messages) {
-					if(m instanceof String) {
+
+				for (Object m : messages) {
+					if (m instanceof String) {
 						finalMessages.add(new Message((String) m));
-					} else if(m instanceof Map) {
+					} else if (m instanceof Map) {
 						Map<String, List<String>> message = (Map<String, List<String>>) m;
-					
-						for(Entry<String, List<String>> entry : message.entrySet()) {
+
+						for (Entry<String, List<String>> entry : message.entrySet()) {
 							finalMessages.add(new Message(entry.getKey()));
 						}
 					}
@@ -120,29 +120,29 @@ public class AutoMessage extends JavaPlugin {
 
 		// Saves any version changes to the disk
 		saveConfiguration();
-		
+
 		return true;
 	}
 
 	public void saveConfiguration() {
-		if(!(new File(getDataFolder() + File.separator + "config.yml").exists())) {
+		if (!(new File(getDataFolder() + File.separator + "config.yml").exists())) {
 			saveDefaultConfig();
 		}
 
-		for(String key : getConfig().getConfigurationSection("message-lists").getKeys(false)) {
+		for (String key : getConfig().getConfigurationSection("message-lists").getKeys(false)) {
 			getConfig().set("message-lists." + key, null);
 		}
 
-		for(String key : MessageLists.getMessageLists().keySet()) {
+		for (String key : MessageLists.getMessageLists().keySet()) {
 			MessageList list = MessageLists.getExactList(key);
 			getConfig().set("message-lists." + key + ".enabled", list.isEnabled());
 			getConfig().set("message-lists." + key + ".interval", list.getInterval());
 			getConfig().set("message-lists." + key + ".expiry", list.getExpiry());
 			getConfig().set("message-lists." + key + ".random", list.isRandom());
-			
+
 			List<String> messages = new LinkedList<String>();
-			
-			for(Message m : list.getMessages()) {
+
+			for (Message m : list.getMessages()) {
 				messages.add(m.getMessage());
 			}
 

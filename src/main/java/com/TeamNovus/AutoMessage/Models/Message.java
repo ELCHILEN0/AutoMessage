@@ -5,6 +5,10 @@ import java.util.LinkedList;
 import org.bukkit.Bukkit;
 
 public class Message {
+	private static final String SPLIT_REGEX = "(?<!\\\\)\\\\n";
+	private static final String REPLACE_REGEX = "\\\\\\\\n";
+	private static final String REPLACEMENT = "\\\\n";
+
 	private String raw;
 
 	public Message(String raw) {

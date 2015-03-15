@@ -24,7 +24,7 @@ message-lists:
     - '&1First&r message \nin the default list!'
     - '&2Second&r message \nin the default list!'
     - '&3Third&r message \nin the default list!'
-    - 'These messages will be displayed to users with \nautomessage.receive.default!'
+    - 'These messages will be displayed to users with \nautomessage.receive.regular!'
   json:
     enabled: true
     random: false

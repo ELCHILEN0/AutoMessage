@@ -28,8 +28,7 @@ public class Message {
 	public boolean isJsonMessage(int index) {
 		try {
 			String v = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-			Class.forName("net.minecraft.server." + v + ".ChatSerializer").getMethod("a", String.class).invoke(null, getMessages().get(index));
-
+			Class.forName("net.minecraft.server." + v + ".IChatBaseComponent$ChatSerializer").getMethod("a", String.class).invoke(null, getMessages().get(index));
 			return true;
 		} catch (Exception e) {
 			return false;

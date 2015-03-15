@@ -160,7 +160,7 @@ public class MessageList {
 				}
 
 				if (m.contains("{ONLINE}"))
-					m = m.replace("{ONLINE}", Bukkit.getServer().getOnlinePlayers().length + "");
+					m = m.replace("{ONLINE}", Bukkit.getServer().getOnlinePlayers().size() + "");
 				if (m.contains("{MAX_ONLINE}"))
 					m = m.replace("{MAX_ONLINE}", Bukkit.getServer().getMaxPlayers() + "");
 				if (m.contains("{UNIQUE_PLAYERS}"))
@@ -194,7 +194,7 @@ public class MessageList {
 
 					try {
 						// Parse the message
-						Object parsedMessage = Class.forName("net.minecraft.server." + v + ".ChatSerializer").getMethod("a", String.class).invoke(null, ChatColor.translateAlternateColorCodes("&".charAt(0), m));
+						Object parsedMessage = Class.forName("net.minecraft.server." + v + ".IChatBaseComponent$ChatSerializer").getMethod("a", String.class).invoke(null, ChatColor.translateAlternateColorCodes("&".charAt(0), m));
 						Object packetPlayOutChat = Class.forName("net.minecraft.server." + v + ".PacketPlayOutChat").getConstructor(Class.forName("net.minecraft.server." + v + ".IChatBaseComponent")).newInstance(parsedMessage);
 
 						// Drill down to the playerConnection which calls the sendPacket method
@@ -205,6 +205,7 @@ public class MessageList {
 						// Send the message packet
 						Class.forName("net.minecraft.server." + v + ".PlayerConnection").getMethod("sendPacket", Class.forName("net.minecraft.server." + v + ".Packet")).invoke(playerConnection, packetPlayOutChat);
 					} catch (Exception ignore) {
+						ignore.printStackTrace();
 					}
 				} else {
 					to.sendMessage(ChatColor.translateAlternateColorCodes("&".charAt(0), m));

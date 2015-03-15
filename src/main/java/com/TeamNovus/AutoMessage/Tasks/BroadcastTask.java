@@ -22,7 +22,7 @@ public class BroadcastTask implements Runnable {
 			MessageList list = MessageLists.getExactList(name);
 
 			if (list.isEnabled() && list.hasMessages() && !(list.isExpired())) {
-				if (Bukkit.getServer().getOnlinePlayers().length >= AutoMessage.plugin.getConfig().getInt("settings.min-players")) {
+				if (Bukkit.getServer().getOnlinePlayers().size() >= AutoMessage.plugin.getConfig().getInt("settings.min-players")) {
 					int index = list.isRandom() ? new Random().nextInt(list.getMessages().size()) : list.getCurrentIndex();
 
 					for (Player p : Bukkit.getServer().getOnlinePlayers()) {

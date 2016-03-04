@@ -31,6 +31,32 @@ message-lists:
     interval: 45
     expiry: -1
     messages:
-    - '{text:"Hover over me!",hoverEvent:{action:show_text,value:[{text:"Woah, you just hovered over me!",color:blue}]}}'
-    - '{text:"Click me to run a command!",clickEvent:{action:run_command,value:"/say Clicked."}}'
-    - '{text:"Click me to open Google!",clickEvent:{action:open_url,value:"http://google.com"}}'
+    - |-
+      {
+        "text": "Hover over me!",
+        "hoverEvent": {
+            "action": "show_text",
+            "value": [
+              {
+                "text": "Woah, you just hovered over me!",
+                "color": "blue"
+              }
+            ]
+        }
+      }
+    - |-
+      {
+        "text": "Click me to run a command!",
+        "clickEvent": {
+          "action": "run_command",
+          "value": "/say Clicked."
+        }
+      }
+    - |-
+      {
+        "text": "Click me to open Google!",
+        "clickEvent": {
+          "action": "open_url",
+          "value": "http://google.com"
+        }
+      }

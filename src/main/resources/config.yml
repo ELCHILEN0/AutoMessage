@@ -7,7 +7,7 @@
 #     To split a message onto multiple lines use the \n delimiter!
 #     Lines starting with / will be run as a command!
 #     To add single apostrophes into a message use ''.
-#     For a complete tutorial go to http://dev.bukkit.org/server-mods/automessage.
+#     For a complete tutorial go to http://dev.bukkit.org/server-mods/automessage/
 #     If you are unfamiliar with YAML use the in-game commands: /am help
 
 settings:

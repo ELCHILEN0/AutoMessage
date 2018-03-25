@@ -30,7 +30,7 @@ message-lists:
     random: false
     interval: 45
     expiry: -1
-    messages:
+    messages:&9[Lubisz serwery survival trafiles sam raz]
     - |-
       {
         "text": "Hover over me!",

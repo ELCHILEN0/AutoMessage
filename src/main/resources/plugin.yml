@@ -4,6 +4,7 @@ author: ELCHILEN0
 description: Schedule easily configurable broadcasts!
 website: http://www.novuscraft.org
 main: com.TeamNovus.AutoMessage.AutoMessage
+api-version: 1.13
 commands:
    automessage:
      description: Main command for all AutoMessage commands

@@ -36,16 +36,10 @@ public class AutoMessage extends JavaPlugin {
 		CommandManager.register(PluginCommands.class);
 
 		// Load the configuration.
-		if (loadConfig()) {
-			// Start metrics.
-			try {
-				Metrics metrics = new Metrics(this);
+		loadConfig();
 
-				metrics.start();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		// bStats metrics
+		Metrics metrics = new Metrics(this);
 	}
 
 	@Override
